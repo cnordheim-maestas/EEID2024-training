@@ -1,0 +1,17 @@
+---
+title: "EEID 2024 Training"
+format:
+  html:
+    toc: false
+    toc-location: right
+    html-math-method: katex
+    css: styles.css
+    grid:
+      margin-width: 1000px
+---
+
+## Welcome to the EEID 2024 training workshop
+
+#### Check out our about and schedule pages to continue.
+
+<br> <br> <br>
