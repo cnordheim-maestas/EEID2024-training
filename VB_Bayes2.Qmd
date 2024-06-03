@@ -1,7 +1,8 @@
 ---
-title: |
-    | VectorByte Methods Training
-    | Introduction to Bayesian Computation and MCMC
+title: VectorByte Methods Training
+subtitle: |    
+    | Introduction to Bayesian Computation 
+    | and MCMC
 author: | 
     | The VectorByte Team
     | (Leah R. Johnson, Virginia Tech)

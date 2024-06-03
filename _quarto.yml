@@ -9,6 +9,8 @@ website:
         text: Home
       - href: about.qmd
         text: About
+      - href: materials.qmd
+        text: Materials
 
 format:
   html:

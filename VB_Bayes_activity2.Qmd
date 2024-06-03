@@ -78,7 +78,9 @@ $$
 
 In the last activity we our prior for $\mu$ to be be: $$
 \mu \sim \mathcal{N}(1.9, 0.8^2)
-$$ Together, then, our full model is: $$
+$$ 
+Together, then, our full model is: 
+$$
 \begin{align*}
 \mathbf{Y} & \stackrel{\mathrm{iid}}{\sim} \mathcal{N}(\mu, 0.025^2)\\
 \mu &\sim \mathcal{N}(1.9, 0.8^2)
@@ -238,7 +240,7 @@ As with the analytic approach, it's always a good idea when you run your analyse
 
 ## Practice: Applying to a new dataset
 
-Download VecTraits dataset 562 (Kutcherov et al. 2018. Effects of temperature and photoperiod on the immature development in Cassida rubiginosa Mull. and C. stigmatica Sffr. (Coleoptera: Chrysomelidae). Sci. Rep. 9: 10047). This dataset explores the effects of temperature and photoperiod on body size (weight in mg) for *Cassida stigmatica*, a type of small beetle. Subset the data so you focus on one temperature/photoperiod combination (you could also choose to subset by sex). Using the same model as above, potentially with a different prior distribution, and with the value of $\tau$ set to $1/s^2$ (where $s$ is the empirical standard deviation of your dataset), redo the analysis above.
+Download VecTraits dataset 562 (Kutcherov et al. 2018. Effects of temperature and photoperiod on the immature development in *Cassida rubiginosa Mull.* and *C. stigmatica Sffr.* (Coleoptera: Chrysomelidae). Sci. Rep. 9: 10047). This dataset explores the effects of temperature and photoperiod on body size (weight in mg) for *Cassida stigmatica*, a type of small beetle. Subset the data so you focus on one temperature/photoperiod combination (you could also choose to subset by sex). Using the same model as above, potentially with a different prior distribution, and with the value of $\tau$ set to $1/s^2$ (where $s$ is the empirical standard deviation of your dataset), redo the analysis above.
 
 <br> <br> <br>
 
@@ -268,6 +270,7 @@ modelCode2 <-  nimbleCode({
 
 ```
 
+
 ```{r}
 ## hyperparams for tau
 a   <- 0.01
@@ -289,9 +292,9 @@ model2$getNodeNames()
 
 ## just checking it can compile
 Cmodel2<- compileNimble(model2)
-
-
 ```
+
+
 
 ```{r}
 mcmc.out2 <- nimbleMCMC(code = modelCode2, 
@@ -309,10 +312,11 @@ head(mcmc.out2$chain1)
 samp2<-as.mcmc(mcmc.out2$chain1)
 ```
 
-```{r, fig.align='center'}
 
+```{r, fig.align='center'}
 plot(samp2)
 ```
+
 
 ```{r}
 summary(samp2)
