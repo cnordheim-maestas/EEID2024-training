@@ -20,6 +20,11 @@ We will be using [`R`](https://cran.r-project.org/) for all data manipulation an
 
 You may use any IDE/ GUI for `R` (VScode, RStudio, Emacs, etc). For most people, [`RStudio`](https://www.rstudio.com/) is a good option. Whichever one you decide to use, please make sure it is installed and test it before the workshop. 
 
+For this workshop is important to have installed the package `bayesTPC`. To introduce to this package you can read [here](https://www.biorxiv.org/content/10.1101/2024.04.25.591212v1). Notice that package `nimble` must be installed and loaded before `bayesTPC` can be used. To install `bayesTPC` you can use the following code:
+
+```{r, eval=FALSE}
+remotes::install_github("johnwilliamsmithjr/bayesTPC")
+```
 
 ## Pre-requisites
 
