@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>EEID2024 - EEID 2024 Training</title>
+<title>EEID2024 - EEID 2024 Workshop Training Materials</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -89,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -97,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./materials.html"> 
+    <a class="nav-link active" href="./materials.html" aria-current="page"> 
 <span class="menu-text">Materials</span></a>
   </li>  
 </ul>
@@ -110,14 +110,37 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#pre-work-and-set-up" id="toc-pre-work-and-set-up" class="nav-link" data-scroll-target="#pre-work-and-set-up">Pre-work and set-up</a>
+  <ul class="collapse">
+  <li><a href="#hardware-and-software" id="toc-hardware-and-software" class="nav-link" data-scroll-target="#hardware-and-software">Hardware and Software</a></li>
+  <li><a href="#pre-requisites" id="toc-pre-requisites" class="nav-link" data-scroll-target="#pre-requisites">Pre-requisites</a></li>
+  </ul></li>
+  <li><a href="#training-materials" id="toc-training-materials" class="nav-link" data-scroll-target="#training-materials">2024 Training Materials</a>
+  <ul class="collapse">
+  <li><a href="#introduction-to-traits" id="toc-introduction-to-traits" class="nav-link" data-scroll-target="#introduction-to-traits">Introduction to traits</a></li>
+  <li><a href="#intro-to-bayes" id="toc-intro-to-bayes" class="nav-link" data-scroll-target="#intro-to-bayes">Intro to Bayes</a></li>
+  <li><a href="#bayesian-computation-and-mcmc" id="toc-bayesian-computation-and-mcmc" class="nav-link" data-scroll-target="#bayesian-computation-and-mcmc">Bayesian computation and MCMC</a></li>
+  <li><a href="#fitting-tpcs-using-bayestpc" id="toc-fitting-tpcs-using-bayestpc" class="nav-link" data-scroll-target="#fitting-tpcs-using-bayestpc">Fitting TPCs using <code>bayesTPC</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">EEID 2024 Training</h1>
+<h1 class="title">EEID 2024 Workshop Training Materials</h1>
 </div>
 
 
@@ -134,11 +157,62 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="welcome-to-the-eeid-2024-training-workshop" class="level2">
-<h2 class="anchored" data-anchor-id="welcome-to-the-eeid-2024-training-workshop">Welcome to the EEID 2024 training workshop</h2>
-<section id="check-out-our-about-and-schedule-pages-to-continue." class="level4">
-<h4 class="anchored" data-anchor-id="check-out-our-about-and-schedule-pages-to-continue.">Check out our about and schedule pages to continue.</h4>
-<p><br> <br> <br></p>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p>Many of the materials here were initially developed as part of the <a href="www.vectorbyte.org">VectorByte Initiative</a> and the older VectorBiTE RCN. As such, they have been developed with the effort of many people over the years. Most of those for this workshop originally developed by <a href="https://lrjohnson0.github.io/QEDLab/leahJ.html">Dr.&nbsp;Leah R. Johnson</a> and <a href="https://lrjohnson0.github.io/QEDLab/seanS.html">Sean Sorek</a>. They have been modified for this workshop by Leah Johnson and Victor Pena</p>
+</section>
+<section id="pre-work-and-set-up" class="level1">
+<h1>Pre-work and set-up</h1>
+<section id="hardware-and-software" class="level2">
+<h2 class="anchored" data-anchor-id="hardware-and-software">Hardware and Software</h2>
+<p>We will be using <a href="https://cran.r-project.org/"><code>R</code></a> for all data manipulation and analyses/model fitting. Any operating system (Windows, Mac, Linux) will do, as long as you have <code>R</code> (version 4.2 or higher) installed.</p>
+<p>You may use any IDE/ GUI for <code>R</code> (VScode, RStudio, Emacs, etc). For most people, <a href="https://www.rstudio.com/"><code>RStudio</code></a> is a good option. Whichever one you decide to use, please make sure it is installed and test it before the workshop.</p>
+</section>
+<section id="pre-requisites" class="level2">
+<h2 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h2>
+<p>We are assuming familiarity with R basics as well as at least introductory statistics, including up through linear models and the idea of a likelihood. If you would like materials to review, we recommend that you do the following:</p>
+<ol type="1">
+<li><p>Go to <a href="https://mhasoba.github.io/TheMulQuaBio/intro.html">The Multilingual Quantitative Biologist</a>, and read+work through the <a href="https://mhasoba.github.io/TheMulQuaBio/notebooks/07-R.html">Biological Computing in R Chapter</a>.</p></li>
+<li><p>In addition / alternatively to pre-work element (1), here are some resources for brushing up on R <a href="https://mhasoba.github.io/TheMulQuaBio/notebooks/07-R.html#readings-and-resources">at the end of the Intro R Chapter you can try</a>. But there are many more resources online (e.g., <a href="https://www.codecademy.com/learn/learn-r">this</a> and <a href="https://www.dataquest.io/blog/learn-r-for-data-science/">this</a> ) – pick something that suits your learning style.</p></li>
+<li><p>Review background on <a href="./Stats_review.html">introductory probability and statistics</a> (<a href="./Stats_review_soln.html">solutions to exercises</a>). You can also use the resources on <a href="https://mhasoba.github.io/TheMulQuaBio/Stats-Intro.html">The Multilingual Quantitative Biologist - Basic Data Analyses and Statistics</a></p></li>
+</ol>
+<p><br> <br></p>
+</section>
+</section>
+<section id="training-materials" class="level1">
+<h1>2024 Training Materials</h1>
+<section id="introduction-to-traits" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-traits">Introduction to traits</h2>
+<ul>
+<li><p><a href="intro_to_traits.pdf">Lecture slides</a></p></li>
+<li><p><a href="Cator et al. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics.pdf">Cator <em>et al</em>. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics</a></p></li>
+</ul>
+<p><br> <br></p>
+</section>
+<section id="intro-to-bayes" class="level2">
+<h2 class="anchored" data-anchor-id="intro-to-bayes">Intro to Bayes</h2>
+<ul>
+<li><a href="./VB_Bayes1.html">Lecture Slides</a>, <a href="./VB_Bayes_activity1.html">Practical 1</a></li>
+<li>Datasets:
+<ul>
+<li><a href="MidgeWingLength.csv">Midge data</a></li>
+</ul></li>
+</ul>
+<p><br> <br></p>
+</section>
+<section id="bayesian-computation-and-mcmc" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-computation-and-mcmc">Bayesian computation and MCMC</h2>
+<ul>
+<li><a href="./VB_Bayes2.html">Lecture Slides</a>, <a href="./VB_Bayes_activity2.html">Practical 2A</a></li>
+</ul>
+<p><br> <br></p>
+</section>
+<section id="fitting-tpcs-using-bayestpc" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-tpcs-using-bayestpc">Fitting TPCs using <code>bayesTPC</code></h2>
+<ul>
+<li><a href="./bayesTPC_activity.html">Practical</a></li>
+</ul>
+<p><br> <br></p>
 
 
 </section>
