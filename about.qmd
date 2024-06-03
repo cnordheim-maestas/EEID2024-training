@@ -1,5 +1,22 @@
 ---
-title: "About"
+title: "Disease Ecology in a Changing World: Quantitative tools to applied solutions"
+subtitle: "About EEID 2024 workshop training materials for 'Estimating environmental response functions using Bayesian inference'"
 ---
 
-About this site
+EEID workteam is pleased to bring to the workshop "Disease Ecology in a Changing World: Quantitative tools to applied solutions" the tools developed by VectorByte team for Bayesian inference learning. [These materials](materials.html) aim to provide resources for both guided (during the workshop) and self-led learning. We assume basic familiarity with:
+
+-   [The `R` Programming Language](https://cran.r-project.org/)
+-   Basic calculus (especially the mathematical idea of functions)
+-   Basic probability and statistics (e.g., what is a probability distribution, normal and binomial distributions, means, variances)
+-   Basic knowledge of linear and non-linear models
+
+We've divided the materials into subject matter modules. Each module is designed to build on the previous one, and expects at least knowledge of all of the preceding modules in the sequence. Based on your experience, we encourage students to "choose your own adventure" and start from where you feel comfortable.
+
+Each module consists of four kinds of materials:
+
+-   slides with presentation of materials
+-   videos with recorded lectures based on slides
+-   labs/hands-on materials to allow you to practice material in a practical way
+-   solutions to exercises, when necessary
+
+
