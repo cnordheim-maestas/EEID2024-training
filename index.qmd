@@ -11,7 +11,10 @@ format:
 ---
 
 ## Welcome to the EEID 2024 training workshop
+## Disease Ecology in a Changing World: Quantitative tools to applied solutions
 
-#### Check out our about and schedule pages to continue.
+### Estimating environmental response functions using Bayesian inference
+
+#### Check out our [about](about.qmd) and [materials](materials.qmd) pages to continue.
 
 <br> <br> <br>
