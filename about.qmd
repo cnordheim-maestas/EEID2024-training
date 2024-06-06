@@ -3,19 +3,19 @@ title: "Disease Ecology in a Changing World: Quantitative tools to applied solut
 subtitle: "About EEID 2024 workshop training materials for 'Estimating environmental response functions using Bayesian inference'"
 ---
 
-EEID workteam is pleased to bring to the workshop "Disease Ecology in a Changing World: Quantitative tools to applied solutions" the tools developed by VectorByte team for Bayesian inference learning. [These materials](materials.html) aim to provide resources for both guided (during the workshop) and self-led learning. We assume basic familiarity with:
+The EEID workteam is pleased to present the 2024 pre-conference workshop ["Disease Ecology in a Changing World: Quantitative tools to applied solutions"](https://web.cvent.com/event/b9c7e658-1431-4030-bc0d-e4aa93816616/websitePage:bbd6bd7d-9fe0-4cec-9aea-f8c0d9ecc779?locale=en). This webpage (and linked git repository) contains [materials](materials.html) for the portion of the workshop "Estimating environmental response functions using Bayesian inference". More specifically, these materials, based on those developed by the [VectorByte Initiative](https://www.vectorbyte.org), will introduce students to simple Bayesian approaches for linking responses of organisms to an environmental driver, with most examples being drawn from the thermal trait literature.
+
+We assume basic familiarity with:
 
 -   [The `R` Programming Language](https://cran.r-project.org/)
 -   Basic calculus (especially the mathematical idea of functions)
 -   Basic probability and statistics (e.g., what is a probability distribution, normal and binomial distributions, means, variances)
 -   Basic knowledge of linear and non-linear models
+-  Familiarity with the idea of a likelihood function
 
-We've divided the materials into subject matter modules. Each module is designed to build on the previous one, and expects at least knowledge of all of the preceding modules in the sequence. Based on your experience, we encourage students to "choose your own adventure" and start from where you feel comfortable.
-
-Each module consists of four kinds of materials:
+We've divided the materials into subject matter modules. Each module is designed to build on the previous one and consists of
 
 -   slides with presentation of materials
--   videos with recorded lectures based on slides
 -   labs/hands-on materials to allow you to practice material in a practical way
 -   solutions to exercises, when necessary
 
