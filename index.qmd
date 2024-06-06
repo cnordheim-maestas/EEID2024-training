@@ -1,5 +1,6 @@
 ---
-title: "EEID 2024 Training"
+title: "Welcome to the EEID 2024 Training Workshop"
+subtitle: "Estimating environmental response functions using Bayesian inference"
 format:
   html:
     toc: false
@@ -10,11 +11,24 @@ format:
       margin-width: 1000px
 ---
 
-## Welcome to the EEID 2024 training workshop
-## Disease Ecology in a Changing World: Quantitative tools to applied solutions
+::: columns
+::: {.column width="25%"}
 
-### Estimating environmental response functions using Bayesian inference
+<center>![](EEID2024.jpg)</center>
 
-#### Check out our [about](about.qmd) and [materials](materials.qmd) pages to continue.
+:::
+
+::: {.column width="75%"}
+
+This is the webpage for "Estimating environmental response functions using Bayesian inference" workshop. This workshop is part of the 2024 EEID training workshop pre-conference workshop ["Disease Ecology in a Changing World: Quantitative tools to applied solutions"](https://web.cvent.com/event/b9c7e658-1431-4030-bc0d-e4aa93816616/websitePage:bbd6bd7d-9fe0-4cec-9aea-f8c0d9ecc779?locale=en). 
+
+<br>
+
+Check out our [about](about.qmd) and [materials](materials.qmd) pages to continue.
 
 <br> <br> <br>
+
+:::
+
+:::
+
