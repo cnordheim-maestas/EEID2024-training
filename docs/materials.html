@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -167,6 +201,10 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="hardware-and-software">Hardware and Software</h2>
 <p>We will be using <a href="https://cran.r-project.org/"><code>R</code></a> for all data manipulation and analyses/model fitting. Any operating system (Windows, Mac, Linux) will do, as long as you have <code>R</code> (version 4.2 or higher) installed.</p>
 <p>You may use any IDE/ GUI for <code>R</code> (VScode, RStudio, Emacs, etc). For most people, <a href="https://www.rstudio.com/"><code>RStudio</code></a> is a good option. Whichever one you decide to use, please make sure it is installed and test it before the workshop.</p>
+<p>We will also be using a new package, <a href="https://www.biorxiv.org/content/10.1101/2024.04.25.591212v1"><code>bayesTPC</code></a>. We suggest that you install this package in advance. Note that the <code>nimble</code> package must be installed and loaded before <code>bayesTPC</code> can be used. To install <code>bayesTPC</code> you can use the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"johnwilliamsmithjr/bayesTPC"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="pre-requisites" class="level2">
 <h2 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h2>
@@ -185,7 +223,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="introduction-to-traits">Introduction to traits</h2>
 <ul>
 <li><p><a href="intro_to_traits.pdf">Lecture slides</a></p></li>
-<li><p><a href="Cator et al. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics.pdf">Cator <em>et al</em>. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics</a></p></li>
+<li><p><a href="">Cator <em>et al</em>. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics</a></p></li>
 </ul>
 <p><br> <br></p>
 </section>
