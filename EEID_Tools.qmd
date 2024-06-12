@@ -1,0 +1,153 @@
+---
+title: "EEID 2024 Quantitative Training"
+subtitle: "Introduction to Workshop Tools"
+author: "(Leah R. Johnson, Virginia Tech)"
+title-slide-attributes:
+  data-background-image: EEID2024.jpg
+  data-background-size: contain
+  data-background-opacity: "0.2"
+format: revealjs
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(cache = FALSE, 
+                      echo = FALSE, 
+                      message = FALSE, 
+                      warning = FALSE,
+                      #fig.height=6, 
+                      #fig.width = 1.777777*6,
+                      tidy = FALSE, 
+                      comment = NA, 
+                      highlight = TRUE, 
+                      prompt = FALSE, 
+                      crop = TRUE,
+                      comment = "#>",
+                      collapse = TRUE)
+library(knitr)
+library(kableExtra)
+library(xtable)
+library(viridis)
+
+options(stringsAsFactors=FALSE)
+knit_hooks$set(no.main = function(before, options, envir) {
+    if (before) par(mar = c(4.1, 4.1, 1.1, 1.1))  # smaller margin on top
+})
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_knit$set(width = 80)
+source("my_knitter.R")
+#library(tidyverse)
+#library(reshape2)
+#theme_set(theme_light(base_size = 16))
+make_latex_decorator <- function(output, otherwise) {
+  function() {
+      if (knitr:::is_latex_output()) output else otherwise
+  }
+}
+insert_pause <- make_latex_decorator(". . .", "\n")
+insert_slide_break <- make_latex_decorator("----", "\n")
+insert_inc_bullet <- make_latex_decorator("> *", "*")
+insert_html_math <- make_latex_decorator("", "$$")
+## classoption: aspectratio=169
+```
+
+
+---------------------------
+
+In this workshop, we are focusing on `r myblue("Estimating environmental response functions using Bayesian inference")`. 
+
+As mentioned earlier, environmental factors often effect disease transmission via their effects on the **`r myred("traits")`** of *pathogens, hosts, and vectors*. 
+
+Thus we will be focusing on tools/resources that help us to 
+
+- access trait data
+- build models of trait responses to environmental factors (with Temperature as our primary example)
+- perform inference for these using a Bayesian approach
+
+## Learning objectives
+
+1. We will give you a brief overview to the tools that we will use, and how to access trait data either through the web or using one of the tools.
+
+2. You will then complete a practical to give you a chance to install tools and practice an introductory task. 
+
+
+## Tools for Bayesian Analysis
+
+Although it is entirely possible to program a Bayesian analysis from scratch in your favorite programming language, most folks use tools designed for this purpose. 
+
+For example, one of the earliest was `BUGS/WinBUGS`, and other software, such as `JAGS/rjags` grew out of it.  
+
+------------------------------
+
+In this workshop we'll use two related tools that can be used through R:
+
+- [`nimble`](https://r-nimble.org/): **N**umerical **I**nference for statistical **M**odels using **B**ayesian and **L**ikelihood Estimation; uses almost the same syntax as `BUGS`, etc; flexible; runs in R. 
+- [`bayesTPC`](): wraps `nimble` to enable relatively easy, single-call fitting of a variety of the standard trait-environment relationships with reasonable default priors, while allowing implementation of bespoke functions as well.
+
+Both allow numerical approximation of posterior distributions (more later!).
+
+
+## Installing `nimble` and `bayesTPC`
+
+Installing both packages will proceed in three steps (more details in the practical)
+
+- ensure that you have [appropriate compilers installed](https://r-nimble.org/download), and the R developer tools ([`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package)
+- install [`nimble` from CRAN](https://cran.r-project.org/web/packages/nimble/index.html)
+- install [`bayesTPC` from GitHub](https://github.com/johnwilliamsmithjr/bayesTPC)
+
+You will need to install these in this order to ensure that everything will work properly. 
+
+## Accessing Trait Data
+
+If you are doing experimental work, then maybe you are generating your own trait data. 
+
+`r sk1()`
+
+However, often we want or need to find published trait data that we can use to parameterize our models. 
+
+
+------------------------
+
+Ideally, data produced by scientific studies should be **`r myred("FAIR")`**: 
+
+- **F**indable
+- **A**ccessible
+- **I**nteroperable
+- **R**eusable
+
+Although data is becoming more  [FAIR](https://www.go-fair.org/fair-principles/), not every data generator follows these priciples, and it can be hard to find good data. 
+
+--------------------------
+
+Sometime we find data directly from papers. For traits, we have a few additional places you can look:
+
+- [Open Traits Network](https://opentraits.org/) - mostly a listing of data sets, with a lot of different options, from Arthropods to Zooplankton. Not specific to disease systems.
+- [BioTraits](https://www.biotraits.ucla.edu/) - primarily thermal traits, including things like movement traits across a variety of species in a unified format. Not specific to disease systems. 
+- [VecTraits](https://vectorbyte.crc.nd.edu/vectraits-explorer) - a variety of traits of arthropod vectors of diseases in humans, animals, and plants. Digitized records are currently primarily thermal traits. 
+
+## VectorByte's VecTraits Database
+
+We will primarily use data from `r mygrn("VecTraits")` for three reasons: 
+
+- the database is specific to organisms involved in disease transmission
+- the database is designed on FAIR principles (with Interoperability being the key one here)
+- access to VecTraits is incorporated into `bayesTPC` making it straightforward to include it into an analysis workflow
+
+We can explore data through the [VecTraits Online Interface](https://vectorbyte.crc.nd.edu/vectraits-explorer).
+
+
+## Practical
+
+You will now move on to the hands-on portion of this section. You will:
+
+- get tools installed
+- choose a dataset you are interested in playing with through the VecTraits web interface
+- practice downloading your chosen dataset using `bayesTPC`
+- learn a bit about the downloaded format so you can choose the appropriate columns and visualize your chosen dataset. 
+
+
+
+
+---------------------------------------------
+
+![](EEID2024.jpg){fig-align="center"}
+
