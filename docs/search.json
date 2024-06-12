@@ -182,6 +182,62 @@
     "text": "The EEID workteam is pleased to present the 2024 pre-conference workshop “Disease Ecology in a Changing World: Quantitative tools to applied solutions”. This webpage (and linked git repository) contains materials for the portion of the workshop “Estimating environmental response functions using Bayesian inference”. More specifically, these materials, based on those developed by the VectorByte Initiative, will introduce students to simple Bayesian approaches for linking responses of organisms to an environmental driver, with most examples being drawn from the thermal trait literature.\nWe assume basic familiarity with:\n\nThe R Programming Language\nBasic calculus (especially the mathematical idea of functions)\nBasic probability and statistics (e.g., what is a probability distribution, normal and binomial distributions, means, variances)\nBasic knowledge of linear and non-linear models\nFamiliarity with the idea of a likelihood function\n\nWe’ve divided the materials into subject matter modules. Each module is designed to build on the previous one and consists of\n\nslides with presentation of materials\nlabs/hands-on materials to allow you to practice material in a practical way\nsolutions to exercises, when necessary"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome to the EEID 2024 Training Workshop",
+    "section": "",
+    "text": "This is the webpage for “Estimating environmental response functions using Bayesian inference” workshop. This workshop is part of the 2024 EEID training workshop pre-conference workshop “Disease Ecology in a Changing World: Quantitative tools to applied solutions”.\n\nCheck out our about and materials pages to continue."
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html",
+    "href": "VB_Bayes_activity2.html",
+    "title": "Introduction to Bayesian Methods",
+    "section": "",
+    "text": "Main materials"
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html#packages-and-tools",
+    "href": "VB_Bayes_activity2.html#packages-and-tools",
+    "title": "Introduction to Bayesian Methods",
+    "section": "Packages and tools",
+    "text": "Packages and tools\nFor this practical you will need to first install nimble, then be sure to install the following packages:\n\n# Load libraries\nrequire(nimble)\nrequire(HDInterval)\nlibrary(MCMCvis)\nrequire(coda) # makes diagnostic plots\nrequire(IDPmisc) # makes nice colored pairs plots to look at joint posteriors\n\n##require(mcmcplots) # another option for diagnostic plots, currently unused"
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html#example-midge-wing-length",
+    "href": "VB_Bayes_activity2.html#example-midge-wing-length",
+    "title": "Introduction to Bayesian Methods",
+    "section": "Example: Midge Wing Length",
+    "text": "Example: Midge Wing Length\nWe will use this simple example to go through the steps of assessing a Bayesian model and we’ll see that MCMC can allow us to approximate the posterior distribution.\nGrogan and Wirth (1981) provide data on the wing length (in millimeters) of nine members of a species of midge (small, two-winged flies).\nFrom these measurements we wish to make inference about the population mean \\mu.\n\n# Load data\nWL.data &lt;- read.csv(\"MidgeWingLength.csv\")\nY &lt;- WL.data$WingLength\nn &lt;- length(Y)\n\nhist(Y,breaks=10,xlab=\"Wing Length (mm)\") \n\n\n\n\n\n\n\n\nWe’ll also need summary statistics for the data that we calculated last time:\n\nm&lt;-sum(Y)/n\ns2&lt;-sum((Y-m)^2)/(n-1)"
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html#recall-setting-up-the-bayesian-model",
+    "href": "VB_Bayes_activity2.html#recall-setting-up-the-bayesian-model",
+    "title": "Introduction to Bayesian Methods",
+    "section": "Recall: Setting up the Bayesian Model",
+    "text": "Recall: Setting up the Bayesian Model\nWe need to define the likelihood and the priors for our Bayesian analysis. Given the analysis that we’ve just done, let’s assume that our data come from a normal distribution with unknown mean, \\mu but that we know the variance is \\sigma^2 = 0.025. That is: \n\\mathbf{Y} \\stackrel{\\mathrm{iid}}{\\sim} \\mathcal{N}(\\mu, 0.025^2)\n\nIn the last activity we our prior for \\mu to be be: \n\\mu \\sim \\mathcal{N}(1.9, 0.8^2)\n Together, then, our full model is: \n\\begin{align*}\n\\mathbf{Y} & \\stackrel{\\mathrm{iid}}{\\sim} \\mathcal{N}(\\mu, 0.025^2)\\\\\n\\mu &\\sim \\mathcal{N}(1.9, 0.8^2)\n\\end{align*}\n\nIn the previous activity we wrote a function to calculate \\mu_p and \\tau_p and then plugged in our numbers:\n\ntau.post&lt;-function(tau, tau0, n){n*tau + tau0}\nmu.post&lt;-function(Ybar, mu0, sig20, sig2, n){\n  weight&lt;-sig2+n*sig20\n  \n  return(n*sig20*Ybar/weight + sig2*mu0/weight)\n}\n\nFinally we plotted 3 things together – the data histogram, the prior, and the posterior\n\nmu0 &lt;- 1.9\ns20 &lt;- 0.8\ns2&lt;- 0.025 ## \"true\" variance\n\nmp&lt;-mu.post(Ybar=m, mu0=mu0, sig20=s20, sig2=s2, n=n)\ntp&lt;-tau.post(tau=1/s2, tau0=1/s20, n=n)\n\n\nx&lt;-seq(1.3,2.3, length=1000)\nhist(Y,breaks=10,xlab=\"Wing Length (mm)\", xlim=c(1.3, 2.3),\n     freq=FALSE, ylim=c(0,8)) \nlines(x, dnorm(x, mean=mu0, sd=sqrt(s20)), col=2, lty=2, lwd=2) ## prior\nlines(x, dnorm(x, mean=mp, sd=sqrt(1/tp)), col=4, lwd=2) ## posterior\nlegend(\"topleft\", legend=c(\"prior\", \"posterior\"), col=c(2,4), lty=c(2,1), lwd=2)"
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html#specifying-the-model",
+    "href": "VB_Bayes_activity2.html#specifying-the-model",
+    "title": "Introduction to Bayesian Methods",
+    "section": "Specifying the model",
+    "text": "Specifying the model\nFirst we must encode our choices for our data model and priors to pass them to the fitting routines in nimble. This involves setting up a {\\tt model} that includes the likelihood for each data point and a prior for every parameter we want to estimate. Here is an example of how we would do this for the simple model we fit for the midge data (note that nimble uses the precision instead of the variance or sd for the normal distribution):\n\nmodelCode &lt;-  nimbleCode({\n\n  ## Likelihood\n  for(i in 1:n){\n    Y[i] ~ dnorm(mu,tau)\n  }\n\n  ## Prior for mu\n  mu  ~ dnorm(mu0,tau0)\n\n} ## close model\n)\n\nThis model is formally in the BUGS language (also used by JAGS, WinBugs, etc). Now we will create the nimble model\n\nmodel1 &lt;- nimbleModel(code = modelCode, name = \"model1\", \n                    constants = list(tau=1/s2, mu0=mu0,\n                                    tau0=1/s20, n=n),\n                    data  = list(Y=Y), \n                    inits = list(mu=5))\n\nDefining model\n\n\nBuilding model\n\n\nSetting data and initial values\n\n\nRunning calculate on model\n  [Note] Any error reports that follow may simply reflect missing values in model variables.\n\n\nChecking model sizes and dimensions\n\nmodel1$getNodeNames()\n\n [1] \"mu\"   \"Y[1]\" \"Y[2]\" \"Y[3]\" \"Y[4]\" \"Y[5]\" \"Y[6]\" \"Y[7]\" \"Y[8]\" \"Y[9]\"\n\n## just checking it can compile\nCmodel1&lt;- compileNimble(model1)\n\nCompiling\n  [Note] This may take a minute.\n  [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.\n\n\nThen we run the MCMC and, see how the output looks for a short chain:\n\nmcmc.out &lt;- nimbleMCMC(code = modelCode, \n                       constants = list(tau=1/s2, mu0=mu0,\n                                    tau0=1/s20,n=n),\n                       data  = list(Y=Y),\n                       inits = list(mu=5),\n                       nchains = 1, niter = 100,\n                       #summary = TRUE, WAIC = TRUE,\n                       monitors = c('mu'))\n\nDefining model\n\n\nBuilding model\n\n\nSetting data and initial values\n\n\nRunning calculate on model\n  [Note] Any error reports that follow may simply reflect missing values in model variables.\n\n\nChecking model sizes and dimensions\n\n\nChecking model calculations\n\n\nCompiling\n  [Note] This may take a minute.\n  [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.\n\n\nrunning chain 1...\n\n\n|-------------|-------------|-------------|-------------|\n|-------------------------------------------------------|\n\ndim(mcmc.out)\n\n[1] 100   1\n\nhead(mcmc.out)\n\n           mu\n[1,] 1.720270\n[2,] 1.785662\n[3,] 1.769786\n[4,] 1.788020\n[5,] 1.811145\n[6,] 1.905624\n\n\n\nsamps&lt;-as.mcmc(mcmc.out)\nplot(samps)\n\n\n\n\n\n\n\n\nMCMC is a rejection algorithm that often needs to converge or “burn-in” – that is we need to potentially move until we’re taking draws from the correct distribution. Unlike for optimization problems, this does not mean that the algorithm heads toward a single value. Instead we’re looking for a pattern where the draws are seemingly unrelated and random. To assess convergence we look at trace plots, the goal is to get traces that look like “fuzzy caterpillars”.\nSometimes at the beginning of a run, if we start far from the area near the posterior mean of the parameter, we will instead get something that looks like a trending time series. If this is the case we have to drop the samples that were taken during the burn-in phase. Here’s an example of how to do that, also now running 2 chains simultaneously.\n\nmcmc.out &lt;- nimbleMCMC(code = modelCode, \n                       constants = list(tau=1/s2, mu0=mu0,\n                                    tau0=1/s20,n=n),\n                       data  = list(Y=Y),\n                       inits = list(mu=5),\n                       nchains = 2, niter = 11000,\n                       nburnin = 1000,\n                       #summary = TRUE, WAIC = TRUE,\n                       monitors = c('mu'))\n\nDefining model\n\n\nBuilding model\n\n\nSetting data and initial values\n\n\nRunning calculate on model\n  [Note] Any error reports that follow may simply reflect missing values in model variables.\n\n\nChecking model sizes and dimensions\n\n\nChecking model calculations\n\n\nCompiling\n  [Note] This may take a minute.\n  [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.\n\n\nrunning chain 1...\n\n\n|-------------|-------------|-------------|-------------|\n|-------------------------------------------------------|\n\n\nrunning chain 2...\n\n\n|-------------|-------------|-------------|-------------|\n|-------------------------------------------------------|\n\ndim(mcmc.out$chain1)\n\n[1] 10000     1\n\nhead(mcmc.out$chain1)\n\n           mu\n[1,] 1.843369\n[2,] 1.868562\n[3,] 1.792404\n[4,] 1.846156\n[5,] 1.890843\n[6,] 1.806871\n\n\n\nsamp&lt;-as.mcmc(mcmc.out$chain1)\nplot(samp)\n\n\n\n\n\n\n\n\nThis is a very fuzzy caterpillar!\nWe also often want to check the autocorrelation in the chain.\n\nacfplot(samp, lag=20, aspect=\"fill\", ylim=c(-1,1))\n\n\n\n\n\n\n\n\nThis is really good! It means that the samples are almost entirely uncorrelated.\nFinally we can also use the summary function to examine the samples generated:\n\nsummary(samp)\n\n\nIterations = 1:10000\nThinning interval = 1 \nNumber of chains = 1 \nSample size per chain = 10000 \n\n1. Empirical mean and standard deviation for each variable,\n   plus standard error of the mean:\n\n          Mean             SD       Naive SE Time-series SE \n     1.8054424      0.0527698      0.0005277      0.0005277 \n\n2. Quantiles for each variable:\n\n 2.5%   25%   50%   75% 97.5% \n1.702 1.770 1.806 1.842 1.909 \n\n\nLet’s compare these draws to what we got with our analytic solution:\n\nx&lt;-seq(1.3,2.3, length=1000)\nhist(samp, xlab=\"mu\", xlim=c(1.3, 2.3),\n     freq=FALSE, ylim=c(0,8), main =\"posterior samples\") \nlines(x, dnorm(x, mean=mu0, sd=sqrt(s20)), col=2, lty=2, lwd=2) ## prior\nlines(x, dnorm(x, mean=mp, sd=sqrt(1/tp)), col=4, lwd=2) ## posterior\nlegend(\"topleft\", legend=c(\"prior\", \"analytic posterior\"), col=c(2,4), lty=c(2,1), lwd=2)\n\n\n\n\n\n\n\n\nIt worked!\nAs with the analytic approach, it’s always a good idea when you run your analyses to see how sensitive is your result to the priors you choose. Unless you are purposefully choosing an informative prior, we usually want the prior and posterior to look different, as we see here. You can experiment yourself and try changing the prior to see how this effects the posterior."
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html#practice-applying-to-a-new-dataset",
+    "href": "VB_Bayes_activity2.html#practice-applying-to-a-new-dataset",
+    "title": "Introduction to Bayesian Methods",
+    "section": "Practice: Applying to a new dataset",
+    "text": "Practice: Applying to a new dataset\nDownload VecTraits dataset 562 (Kutcherov et al. 2018. Effects of temperature and photoperiod on the immature development in Cassida rubiginosa Mull. and C. stigmatica Sffr. (Coleoptera: Chrysomelidae). Sci. Rep. 9: 10047). This dataset explores the effects of temperature and photoperiod on body size (weight in mg) for Cassida stigmatica, a type of small beetle. Subset the data so you focus on one temperature/photoperiod combination (you could also choose to subset by sex). Using the same model as above, potentially with a different prior distribution, and with the value of \\tau set to 1/s^2 (where s is the empirical standard deviation of your dataset), redo the analysis above."
+  },
+  {
+    "objectID": "VB_Bayes_activity2.html#practice-updating-the-model",
+    "href": "VB_Bayes_activity2.html#practice-updating-the-model",
+    "title": "Introduction to Bayesian Methods",
+    "section": "Practice: Updating the model",
+    "text": "Practice: Updating the model\nRedo the previous analysis placing a gamma prior on \\mu as well. Set the prior so that the mean and variance are the same as in the normal example from above (use moment matching). Do you get something similar?"
+  },
+  {
     "objectID": "VB_Bayes_activity1.html",
     "href": "VB_Bayes_activity1.html",
     "title": "Introduction to Bayesian Methods",
@@ -231,60 +287,46 @@
     "text": "Practice: Prior sensitivity\nChange the values of the mean and the variance that you choose for the prior (“hyperparameters”). What does this do to the posterior distribution. E.g., what happens if the variance you choose is small, and \\mu_0 =2.5 or so. Is this what you expect?"
   },
   {
-    "objectID": "VB_Bayes_activity2.html",
-    "href": "VB_Bayes_activity2.html",
-    "title": "Introduction to Bayesian Methods",
-    "section": "",
-    "text": "Main materials"
+    "objectID": "EEID_Tools.html#learning-objectives",
+    "href": "EEID_Tools.html#learning-objectives",
+    "title": "EEID 2024 Quantitative Training",
+    "section": "Learning objectives",
+    "text": "Learning objectives\n\nWe will give you a brief overview to the tools that we will use, and how to access trait data either through the web or using one of the tools.\nYou will then complete a practical to give you a chance to install tools and practice an introductory task."
   },
   {
-    "objectID": "VB_Bayes_activity2.html#packages-and-tools",
-    "href": "VB_Bayes_activity2.html#packages-and-tools",
-    "title": "Introduction to Bayesian Methods",
-    "section": "Packages and tools",
-    "text": "Packages and tools\nFor this practical you will need to first install nimble, then be sure to install the following packages:\n\n# Load libraries\nrequire(nimble)\nrequire(HDInterval)\nlibrary(MCMCvis)\nrequire(coda) # makes diagnostic plots\nrequire(IDPmisc) # makes nice colored pairs plots to look at joint posteriors\n\n##require(mcmcplots) # another option for diagnostic plots, currently unused"
+    "objectID": "EEID_Tools.html#tools-for-bayesian-analysis",
+    "href": "EEID_Tools.html#tools-for-bayesian-analysis",
+    "title": "EEID 2024 Quantitative Training",
+    "section": "Tools for Bayesian Analysis",
+    "text": "Tools for Bayesian Analysis\nAlthough it is entirely possible to program a Bayesian analysis from scratch in your favorite programming language, most folks use tools designed for this purpose.\nFor example, one of the earliest was BUGS/WinBUGS, and other software, such as JAGS/rjags grew out of it."
   },
   {
-    "objectID": "VB_Bayes_activity2.html#example-midge-wing-length",
-    "href": "VB_Bayes_activity2.html#example-midge-wing-length",
-    "title": "Introduction to Bayesian Methods",
-    "section": "Example: Midge Wing Length",
-    "text": "Example: Midge Wing Length\nWe will use this simple example to go through the steps of assessing a Bayesian model and we’ll see that MCMC can allow us to approximate the posterior distribution.\nGrogan and Wirth (1981) provide data on the wing length (in millimeters) of nine members of a species of midge (small, two-winged flies).\nFrom these measurements we wish to make inference about the population mean \\mu.\n\n# Load data\nWL.data &lt;- read.csv(\"MidgeWingLength.csv\")\nY &lt;- WL.data$WingLength\nn &lt;- length(Y)\n\nhist(Y,breaks=10,xlab=\"Wing Length (mm)\") \n\n\n\n\n\n\n\n\nWe’ll also need summary statistics for the data that we calculated last time:\n\nm&lt;-sum(Y)/n\ns2&lt;-sum((Y-m)^2)/(n-1)"
+    "objectID": "EEID_Tools.html#installing-nimble-and-bayestpc",
+    "href": "EEID_Tools.html#installing-nimble-and-bayestpc",
+    "title": "EEID 2024 Quantitative Training",
+    "section": "Installing nimble and bayesTPC",
+    "text": "Installing nimble and bayesTPC\nInstalling both packages will proceed in three steps (more details in the practical)\n\nensure that you have appropriate compilers installed, and the R developer tools (devtools package)\ninstall nimble from CRAN\ninstall bayesTPC from GitHub\n\nYou will need to install these in this order to ensure that everything will work properly."
   },
   {
-    "objectID": "VB_Bayes_activity2.html#recall-setting-up-the-bayesian-model",
-    "href": "VB_Bayes_activity2.html#recall-setting-up-the-bayesian-model",
-    "title": "Introduction to Bayesian Methods",
-    "section": "Recall: Setting up the Bayesian Model",
-    "text": "Recall: Setting up the Bayesian Model\nWe need to define the likelihood and the priors for our Bayesian analysis. Given the analysis that we’ve just done, let’s assume that our data come from a normal distribution with unknown mean, \\mu but that we know the variance is \\sigma^2 = 0.025. That is: \n\\mathbf{Y} \\stackrel{\\mathrm{iid}}{\\sim} \\mathcal{N}(\\mu, 0.025^2)\n\nIn the last activity we our prior for \\mu to be be: \n\\mu \\sim \\mathcal{N}(1.9, 0.8^2)\n Together, then, our full model is: \n\\begin{align*}\n\\mathbf{Y} & \\stackrel{\\mathrm{iid}}{\\sim} \\mathcal{N}(\\mu, 0.025^2)\\\\\n\\mu &\\sim \\mathcal{N}(1.9, 0.8^2)\n\\end{align*}\n\nIn the previous activity we wrote a function to calculate \\mu_p and \\tau_p and then plugged in our numbers:\n\ntau.post&lt;-function(tau, tau0, n){n*tau + tau0}\nmu.post&lt;-function(Ybar, mu0, sig20, sig2, n){\n  weight&lt;-sig2+n*sig20\n  \n  return(n*sig20*Ybar/weight + sig2*mu0/weight)\n}\n\nFinally we plotted 3 things together – the data histogram, the prior, and the posterior\n\nmu0 &lt;- 1.9\ns20 &lt;- 0.8\ns2&lt;- 0.025 ## \"true\" variance\n\nmp&lt;-mu.post(Ybar=m, mu0=mu0, sig20=s20, sig2=s2, n=n)\ntp&lt;-tau.post(tau=1/s2, tau0=1/s20, n=n)\n\n\nx&lt;-seq(1.3,2.3, length=1000)\nhist(Y,breaks=10,xlab=\"Wing Length (mm)\", xlim=c(1.3, 2.3),\n     freq=FALSE, ylim=c(0,8)) \nlines(x, dnorm(x, mean=mu0, sd=sqrt(s20)), col=2, lty=2, lwd=2) ## prior\nlines(x, dnorm(x, mean=mp, sd=sqrt(1/tp)), col=4, lwd=2) ## posterior\nlegend(\"topleft\", legend=c(\"prior\", \"posterior\"), col=c(2,4), lty=c(2,1), lwd=2)"
+    "objectID": "EEID_Tools.html#accessing-trait-data",
+    "href": "EEID_Tools.html#accessing-trait-data",
+    "title": "EEID 2024 Quantitative Training",
+    "section": "Accessing Trait Data",
+    "text": "Accessing Trait Data\nIf you are doing experimental work, then maybe you are generating your own trait data.\n\nHowever, often we want or need to find published trait data that we can use to parameterize our models."
   },
   {
-    "objectID": "VB_Bayes_activity2.html#specifying-the-model",
-    "href": "VB_Bayes_activity2.html#specifying-the-model",
-    "title": "Introduction to Bayesian Methods",
-    "section": "Specifying the model",
-    "text": "Specifying the model\nFirst we must encode our choices for our data model and priors to pass them to the fitting routines in nimble. This involves setting up a {\\tt model} that includes the likelihood for each data point and a prior for every parameter we want to estimate. Here is an example of how we would do this for the simple model we fit for the midge data (note that nimble uses the precision instead of the variance or sd for the normal distribution):\n\nmodelCode &lt;-  nimbleCode({\n\n  ## Likelihood\n  for(i in 1:n){\n    Y[i] ~ dnorm(mu,tau)\n  }\n\n  ## Prior for mu\n  mu  ~ dnorm(mu0,tau0)\n\n} ## close model\n)\n\nThis model is formally in the BUGS language (also used by JAGS, WinBugs, etc). Now we will create the nimble model\n\nmodel1 &lt;- nimbleModel(code = modelCode, name = \"model1\", \n                    constants = list(tau=1/s2, mu0=mu0,\n                                    tau0=1/s20, n=n),\n                    data  = list(Y=Y), \n                    inits = list(mu=5))\n\nDefining model\n\n\nBuilding model\n\n\nSetting data and initial values\n\n\nRunning calculate on model\n  [Note] Any error reports that follow may simply reflect missing values in model variables.\n\n\nChecking model sizes and dimensions\n\nmodel1$getNodeNames()\n\n [1] \"mu\"   \"Y[1]\" \"Y[2]\" \"Y[3]\" \"Y[4]\" \"Y[5]\" \"Y[6]\" \"Y[7]\" \"Y[8]\" \"Y[9]\"\n\n## just checking it can compile\nCmodel1&lt;- compileNimble(model1)\n\nCompiling\n  [Note] This may take a minute.\n  [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.\n\n\nThen we run the MCMC and, see how the output looks for a short chain:\n\nmcmc.out &lt;- nimbleMCMC(code = modelCode, \n                       constants = list(tau=1/s2, mu0=mu0,\n                                    tau0=1/s20,n=n),\n                       data  = list(Y=Y),\n                       inits = list(mu=5),\n                       nchains = 1, niter = 100,\n                       #summary = TRUE, WAIC = TRUE,\n                       monitors = c('mu'))\n\nDefining model\n\n\nBuilding model\n\n\nSetting data and initial values\n\n\nRunning calculate on model\n  [Note] Any error reports that follow may simply reflect missing values in model variables.\n\n\nChecking model sizes and dimensions\n\n\nChecking model calculations\n\n\nCompiling\n  [Note] This may take a minute.\n  [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.\n\n\nrunning chain 1...\n\n\n|-------------|-------------|-------------|-------------|\n|-------------------------------------------------------|\n\ndim(mcmc.out)\n\n[1] 100   1\n\nhead(mcmc.out)\n\n           mu\n[1,] 1.867171\n[2,] 1.862207\n[3,] 1.770561\n[4,] 1.770931\n[5,] 1.739676\n[6,] 1.819945\n\n\n\nsamps&lt;-as.mcmc(mcmc.out)\nplot(samps)\n\n\n\n\n\n\n\n\nMCMC is a rejection algorithm that often needs to converge or “burn-in” – that is we need to potentially move until we’re taking draws from the correct distribution. Unlike for optimization problems, this does not mean that the algorithm heads toward a single value. Instead we’re looking for a pattern where the draws are seemingly unrelated and random. To assess convergence we look at trace plots, the goal is to get traces that look like “fuzzy caterpillars”.\nSometimes at the beginning of a run, if we start far from the area near the posterior mean of the parameter, we will instead get something that looks like a trending time series. If this is the case we have to drop the samples that were taken during the burn-in phase. Here’s an example of how to do that, also now running 2 chains simultaneously.\n\nmcmc.out &lt;- nimbleMCMC(code = modelCode, \n                       constants = list(tau=1/s2, mu0=mu0,\n                                    tau0=1/s20,n=n),\n                       data  = list(Y=Y),\n                       inits = list(mu=5),\n                       nchains = 2, niter = 11000,\n                       nburnin = 1000,\n                       #summary = TRUE, WAIC = TRUE,\n                       monitors = c('mu'))\n\nDefining model\n\n\nBuilding model\n\n\nSetting data and initial values\n\n\nRunning calculate on model\n  [Note] Any error reports that follow may simply reflect missing values in model variables.\n\n\nChecking model sizes and dimensions\n\n\nChecking model calculations\n\n\nCompiling\n  [Note] This may take a minute.\n  [Note] Use 'showCompilerOutput = TRUE' to see C++ compilation details.\n\n\nrunning chain 1...\n\n\n|-------------|-------------|-------------|-------------|\n|-------------------------------------------------------|\n\n\nrunning chain 2...\n\n\n|-------------|-------------|-------------|-------------|\n|-------------------------------------------------------|\n\ndim(mcmc.out$chain1)\n\n[1] 10000     1\n\nhead(mcmc.out$chain1)\n\n           mu\n[1,] 1.871651\n[2,] 1.814086\n[3,] 1.764322\n[4,] 1.817721\n[5,] 1.882392\n[6,] 1.786791\n\n\n\nsamp&lt;-as.mcmc(mcmc.out$chain1)\nplot(samp)\n\n\n\n\n\n\n\n\nThis is a very fuzzy caterpillar!\nWe also often want to check the autocorrelation in the chain.\n\nacfplot(samp, lag=20, aspect=\"fill\", ylim=c(-1,1))\n\n\n\n\n\n\n\n\nThis is really good! It means that the samples are almost entirely uncorrelated.\nFinally we can also use the summary function to examine the samples generated:\n\nsummary(samp)\n\n\nIterations = 1:10000\nThinning interval = 1 \nNumber of chains = 1 \nSample size per chain = 10000 \n\n1. Empirical mean and standard deviation for each variable,\n   plus standard error of the mean:\n\n          Mean             SD       Naive SE Time-series SE \n     1.8048001      0.0521225      0.0005212      0.0005212 \n\n2. Quantiles for each variable:\n\n 2.5%   25%   50%   75% 97.5% \n1.703 1.770 1.805 1.840 1.907 \n\n\nLet’s compare these draws to what we got with our analytic solution:\n\nx&lt;-seq(1.3,2.3, length=1000)\nhist(samp, xlab=\"mu\", xlim=c(1.3, 2.3),\n     freq=FALSE, ylim=c(0,8), main =\"posterior samples\") \nlines(x, dnorm(x, mean=mu0, sd=sqrt(s20)), col=2, lty=2, lwd=2) ## prior\nlines(x, dnorm(x, mean=mp, sd=sqrt(1/tp)), col=4, lwd=2) ## posterior\nlegend(\"topleft\", legend=c(\"prior\", \"analytic posterior\"), col=c(2,4), lty=c(2,1), lwd=2)\n\n\n\n\n\n\n\n\nIt worked!\nAs with the analytic approach, it’s always a good idea when you run your analyses to see how sensitive is your result to the priors you choose. Unless you are purposefully choosing an informative prior, we usually want the prior and posterior to look different, as we see here. You can experiment yourself and try changing the prior to see how this effects the posterior."
+    "objectID": "EEID_Tools.html#vectorbytes-vectraits-database",
+    "href": "EEID_Tools.html#vectorbytes-vectraits-database",
+    "title": "EEID 2024 Quantitative Training",
+    "section": "VectorByte’s VecTraits Database",
+    "text": "VectorByte’s VecTraits Database\nWe will primarily use data from VecTraits for three reasons:\n\nthe database is specific to organisms involved in disease transmission\nthe database is designed on FAIR principles (with Interoperability being the key one here)\naccess to VecTraits is incorporated into bayesTPC making it straightforward to include it into an analysis workflow\n\nWe can explore data through the VecTraits Online Interface."
   },
   {
-    "objectID": "VB_Bayes_activity2.html#practice-applying-to-a-new-dataset",
-    "href": "VB_Bayes_activity2.html#practice-applying-to-a-new-dataset",
-    "title": "Introduction to Bayesian Methods",
-    "section": "Practice: Applying to a new dataset",
-    "text": "Practice: Applying to a new dataset\nDownload VecTraits dataset 562 (Kutcherov et al. 2018. Effects of temperature and photoperiod on the immature development in Cassida rubiginosa Mull. and C. stigmatica Sffr. (Coleoptera: Chrysomelidae). Sci. Rep. 9: 10047). This dataset explores the effects of temperature and photoperiod on body size (weight in mg) for Cassida stigmatica, a type of small beetle. Subset the data so you focus on one temperature/photoperiod combination (you could also choose to subset by sex). Using the same model as above, potentially with a different prior distribution, and with the value of \\tau set to 1/s^2 (where s is the empirical standard deviation of your dataset), redo the analysis above."
-  },
-  {
-    "objectID": "VB_Bayes_activity2.html#practice-updating-the-model",
-    "href": "VB_Bayes_activity2.html#practice-updating-the-model",
-    "title": "Introduction to Bayesian Methods",
-    "section": "Practice: Updating the model",
-    "text": "Practice: Updating the model\nRedo the previous analysis placing a gamma prior on \\mu as well. Set the prior so that the mean and variance are the same as in the normal example from above (use moment matching). Do you get something similar?"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Welcome to the EEID 2024 Training Workshop",
-    "section": "",
-    "text": "This is the webpage for “Estimating environmental response functions using Bayesian inference” workshop. This workshop is part of the 2024 EEID training workshop pre-conference workshop “Disease Ecology in a Changing World: Quantitative tools to applied solutions”.\n\nCheck out our about and materials pages to continue."
+    "objectID": "EEID_Tools.html#practical",
+    "href": "EEID_Tools.html#practical",
+    "title": "EEID 2024 Quantitative Training",
+    "section": "Practical",
+    "text": "Practical\nYou will now move on to the hands-on portion of this section. You will:\n\nget tools installed\nchoose a dataset you are interested in playing with through the VecTraits web interface\npractice downloading your chosen dataset using bayesTPC\nlearn a bit about the downloaded format so you can choose the appropriate columns and visualize your chosen dataset."
   },
   {
     "objectID": "materials.html",
@@ -319,7 +361,7 @@
     "href": "materials.html#intro-to-course-tools",
     "title": "EEID 2024 Workshop Training Materials",
     "section": "Intro to Course Tools",
-    "text": "Intro to Course Tools\n\nLecture Slides: Coming Soon, Practical: Coming Soon"
+    "text": "Intro to Course Tools\n\nLecture Slides, Practical: Coming Soon"
   },
   {
     "objectID": "materials.html#intro-to-bayes",
