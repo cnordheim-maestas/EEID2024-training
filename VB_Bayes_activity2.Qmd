@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Bayesian Methods"
-subtitle: 'Activity 2A: Analytic vs. Numeric Bayesian analysis'
+subtitle: "Activity 2A: Analytic vs. Numeric Bayesian analysis"
 format:
   html:
     toc: true

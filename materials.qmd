@@ -41,11 +41,20 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 # 2024 Training Materials
 
-## Introduction to traits
 
--   [Lecture slides](intro_to_traits.pdf)
+## Introduction to traits in Disease modeling
 
--   [Cator *et al*. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics]()
+-   [Lecture slides: Coming Soon]()
+
+-   [Cator *et al*. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics](Cator2020.pdf)
+
+<br> <br>
+
+
+## Intro to Course Tools
+
+-   [Lecture Slides: Coming Soon](), [Practical: Coming Soon]()
+
 
 <br> <br>
 
@@ -70,3 +79,12 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 
 <br> <br>
+
+
+## Advanced features in `bayesTPC`
+
+-   [Practical: Coming Soon]()
+
+
+<br> <br>
+
