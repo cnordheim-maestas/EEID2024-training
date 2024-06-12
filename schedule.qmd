@@ -1,0 +1,68 @@
+---
+title: "EEID 2024 workshop Schedule"
+subtitile:  "Estimating environmental response functions using Bayesian inference"
+description: "Schedule for synchronous training and suggestions for asynchronous study"
+format:
+  html:
+    toc: true
+    toc-location: left
+    html-math-method: katex
+    css: styles.css
+---
+
+The EEID 2024 workshop session *Estimating environmental response functions using Bayesian inference* will be developed on three sesions from 22nd June to 24th June of 2024. The sessions include both theoretical input and practical sessions. Practical sessions will take a relevant part of the time on which you will be developing exercises and activities. In addition, it is expected for each participant to develop a small project which will present at the end of the workshop. It is worth to keep in mind that working outside the synchronous sessions is suggested to achieve the objectives of the workshop given its schedule. 
+
+You can access to activities, lectures, and readings in [materials](materials.html).
+
+<br> <br> <br>
+
+## Day 1 (22nd June 2024)
+
+| Time | Activity                       | Material          |
+|------|--------------------------------|-------------------|
+|09:00 |Introductions & course overview |                   |
+|09:30 |Introduction to traits and disease modeling |[slides]() |
+|10:00 |Goal setting                    |                   |
+|10:15 |Lightning introductions and goals|                  |
+|10:35 |Break                           |                   |
+|11:00 |Introducing tools: Downloading and installing `bayesTPC`, VecTraits database|[slides]() |
+|11:40 |Practice: Visualizing traits data |[Practice]()     |
+|12:00 |End of day 1                    |                   |
+
+<br> <br>
+
+## Day 2 (23rd June 2024)
+
+| Time | Activity                       | Material          |
+|------|--------------------------------|-------------------|
+|12:30 |Introductions to Bayes          |[Practice](VB_Bayes_activity1.qmd) |
+|13:45 |Break                           |                   |
+|14:00 |Bayesian computation            |[Practice](VB_Bayes_activity2.Qmd) |
+|15:15 |Break                           |                   |
+|15:30 |Using `bayesTPC` (practical)    |[Practice](bayesTPC_activity.qmd) |
+|16:45 |Proposing project analysis      |                   |
+|17:10 |Lightning presentations of project ideas |          |
+|17:30 |End of session                  |                   |
+
+<br> <br>
+
+## Day 3 (24th June 2024)
+
+| Time | Activity                       | Material          |
+|------|--------------------------------|-------------------|
+|09:00 |Advance topic using `bayesTPC`  |                   |
+|10:00 |Break                           |                   |
+|10:15 |Work on project analysis        |                   |
+|11:15 |Preparing a follow-up slide     |                   |
+|11:30 |Project presentation            |                   |
+|12:00 |End of session                  |                   |
+
+# Post-workshop
+
+Enjoy the [EEID 2024](https://woods.stanford.edu/EEIDConference2024) meeting **Healthy Planet, Healthy People**.
+
+<center>![](EEID2024.jpg)</center>
+
+Enjoy and apply the learnings!
+
+<br> <br> <br>
