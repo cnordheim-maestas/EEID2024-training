@@ -14,13 +14,22 @@ format:
 ::: columns
 ::: {.column width="25%"}
 
-<center>![](EEID2024.jpg)</center>
+<center>![](EEID2024.jpg)
+
+
+![](VectorByte-logo_lg.png)
+
+</center>
 
 :::
 
 ::: {.column width="75%"}
 
 This is the webpage for "Estimating environmental response functions using Bayesian inference" workshop. This workshop is part of the 2024 EEID training workshop pre-conference workshop ["Disease Ecology in a Changing World: Quantitative tools to applied solutions"](https://web.cvent.com/event/b9c7e658-1431-4030-bc0d-e4aa93816616/websitePage:bbd6bd7d-9fe0-4cec-9aea-f8c0d9ecc779?locale=en). 
+
+<br>
+
+[Materials](materials.html) for this workshop are based on those developed by members of the [VectorByte Initiate and VectorBiTE RCN](www.vectorbyte.org).
 
 <br>
 

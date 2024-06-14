@@ -10,7 +10,7 @@ format:
 
 # Overview
 
-Many of the materials here were initially developed as part of the [VectorByte Initiative](www.vectorbyte.org) and the older VectorBiTE RCN. As such, they have been developed with the effort of many people over the years. Most of those for this workshop originally developed by [Dr. Leah R. Johnson](https://lrjohnson0.github.io/QEDLab/leahJ.html) and [Sean Sorek](https://lrjohnson0.github.io/QEDLab/seanS.html). They have been modified for this workshop by Leah Johnson and Victor Pena 
+Most of the materials here were initially developed as part of the [VectorByte Initiative](www.vectorbyte.org) and the older VectorBiTE RCN. As such, they have been developed with the effort of many people over the years. Most of the specific materials for this workshop were originally developed by [Dr. Leah R. Johnson](https://lrjohnson0.github.io/QEDLab/leahJ.html) and [Sean Sorek](https://lrjohnson0.github.io/QEDLab/seanS.html). They have been modified for this workshop by Leah Johnson and Victor Pena. 
 
 # Pre-work and set-up
 
@@ -87,4 +87,12 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 
 <br> <br>
+
+
+----------------------------------------------
+
+
+<center> ![](EEID2024.jpg){width=6cm} ![](VectorByte-logo_lg.png){width=6cm} </center>
+
+
 
