@@ -83,7 +83,7 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 ## Advanced features in `bayesTPC`
 
--   [Practical: Coming Soon]()
+-   [Practical: Coming Soon](bayesTPC_advanced.qmd)
 
 
 <br> <br>

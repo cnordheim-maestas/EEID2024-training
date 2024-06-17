@@ -1,7 +1,7 @@
 ---
-title: "Advanced topics with bayesTPC"
+title: "Advanced topics with `bayesTPC`"
 format: html
-editor: visual
+
 ---
 
 ```{r}
@@ -21,7 +21,7 @@ library(bayesTPC)
 library(scales)
 ```
 
-In this section, we will see how to use a custom functional form for thermal performance curves that is not currently implemented in bayesTPC. We will also see how to process the output from bayesTPC to generate custom plots or get the posterior distribution of model parameters.
+In this section, we will see how to use a custom functional form for thermal performance curves that is not currently implemented in `` `bayesTPC` ``. We will also see how to process the output from bayesTPC to generate custom plots or get the posterior distribution of model parameters.
 
 ## Thermal performance curves under antibiotics
 
@@ -61,7 +61,7 @@ plot(both$T, both$OD, xlab="Temperature [°C]", ylab="OD", main="GEN+ERY", ylim=
 
 As might be expected, adding antibiotics to the growth media decreases the number of bacteria. However, they can decrease growth more at some temperatures than others, leading to changes in the shape of the TPC.
 
-Some of the shapes you get when adding antibiotics do not look like typical TPCs and it could be difficult to fit this data with many common TPC models. In the following section, we show how we can add a new functional form to bayesTPC that can describe these TPCs.
+Some of the shapes you get when adding antibiotics do not look like typical TPCs and it could be difficult to fit this data with many common TPC models. In the following section, we show how we can add a new functional form to `bayesTPC` that can describe these TPCs.
 
 ## A flexible and interpretable model for thermal performance curves
 
@@ -170,9 +170,9 @@ Plot.plot({
 
 (there's supposed to be an interactive visualization above this line, hopefully this works on the website!).
 
-### Adding the flexTPC function to bayesTPC
+### Adding the flexTPC function to `bayesTPC`
 
-We want to add the flexTPC functional form to bayesTPC. To do this, we need two things:
+We want to add the flexTPC functional form to `bayesTPC`. To do this, we need two things:
 
 -   We need to define an expression with the formula we want to use.
 
@@ -349,7 +349,7 @@ quantile(T_opt_samples, c(0.025, 0.5, 0.975))
 
 We can follow a similar approach to obtain the posterior distribution of the value of the curve at any temperature (or a grid of temperatures). In this case, the transformation of the parameters we want is simply the equation for the flexTPC model itself to get the posterior distribution of the TPC at temperature $T$. We can then directly calculate medians and credible intervals to plot the TPCs.
 
-It can be useful to calculate these values directly if we want to customize our plots to make them nicer compared to the bayesTPC defaults:
+It can be useful to calculate these values directly if we want to customize our plots to make them nicer compared to the `bayesTPC` defaults:
 
 ```{r}
 ## Grid of temperatures to use to plot the TPCs.
@@ -439,7 +439,7 @@ Here, the curve with no antibiotics is shown in black. We can see that the GEN+E
 
 ## Model selection
 
-In this section, we show how we can compare between different models with bayesTPC using WAIC. We will compare two candidate models:
+In this section, we show how we can compare between different models with `bayesTPC` using WAIC. We will compare two candidate models:
 
 a\) A single TPC model for all of the antibiotic conditions. This corresponds to a null hypothesis of antibiotics not affecting the thermal performance curve.
 
@@ -486,4 +486,4 @@ The WAIC for the individual curves is much lower (more negative) than for the si
 
 However, we get some warnings about the WAIC estimates for the individual curves potentially being unstable. These are likely due to the smaller sample size, which makes some individual data points very influential in the WAIC calculation.
 
-In this case, the difference between the WAICs is so large that this potential inaccuracy is not likely to lead to choosing the wrong model. However, to be safe, the WAIC could be compared to other model selection criteria like cross validation (currently not implemented in bayesTPC).
+In this case, the difference between the WAICs is so large that this potential inaccuracy is not likely to lead to choosing the wrong model. However, to be safe, the WAIC could be compared to other model selection criteria like cross validation (currently not implemented in `bayesTPC`).

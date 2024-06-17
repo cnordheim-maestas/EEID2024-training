@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Bayesian Methods"
-subtitle: 'Activity 2B: Fitting TPCs using `bayesTPC`'
+subtitle: 'Activity: Fitting TPCs using `bayesTPC`'
 format:
   html:
     toc: true
