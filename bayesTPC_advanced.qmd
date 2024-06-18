@@ -1,7 +1,7 @@
 ---
-title: "Advanced topics with `bayesTPC`"
+title: "Advanced topics with bayesTPC"
 format: html
-
+editor: visual
 ---
 
 ```{r}
@@ -21,7 +21,7 @@ library(bayesTPC)
 library(scales)
 ```
 
-In this section, we will see how to use a custom functional form for thermal performance curves that is not currently implemented in `` `bayesTPC` ``. We will also see how to process the output from bayesTPC to generate custom plots or get the posterior distribution of model parameters.
+In this section, we will see how to use a custom functional form for thermal performance curves that is not currently implemented in bayesTPC. We will also see how to process the output from bayesTPC to generate custom plots or get the posterior distribution of model parameters.
 
 ## Thermal performance curves under antibiotics
 
@@ -61,7 +61,7 @@ plot(both$T, both$OD, xlab="Temperature [°C]", ylab="OD", main="GEN+ERY", ylim=
 
 As might be expected, adding antibiotics to the growth media decreases the number of bacteria. However, they can decrease growth more at some temperatures than others, leading to changes in the shape of the TPC.
 
-Some of the shapes you get when adding antibiotics do not look like typical TPCs and it could be difficult to fit this data with many common TPC models. In the following section, we show how we can add a new functional form to `bayesTPC` that can describe these TPCs.
+Some of the shapes you get when adding antibiotics do not look like typical TPCs and it could be difficult to fit this data with many common TPC models. In the following section, we show how we can add a new functional form to bayesTPC that can describe these TPCs.
 
 ## A flexible and interpretable model for thermal performance curves
 
@@ -170,9 +170,9 @@ Plot.plot({
 
 (there's supposed to be an interactive visualization above this line, hopefully this works on the website!).
 
-### Adding the flexTPC function to `bayesTPC`
+### Adding the flexTPC function to bayesTPC
 
-We want to add the flexTPC functional form to `bayesTPC`. To do this, we need two things:
+We want to add the flexTPC functional form to bayesTPC. To do this, we need two things:
 
 -   We need to define an expression with the formula we want to use.
 
@@ -187,7 +187,7 @@ flexTPC_formula <- expression((T_max > Temp) * (T_min < Temp) * r_max * exp((alp
 
 # Prior distributions.
 flexTPC_priors <- c(
-  r_max = "dunif(0, 1)", # Maximum trait value. Chosen because OD values are less than one and because we want to give equal prior probability to all values in this interval.
+  r_max = "dunif(0, 1)", # Maximum trait value. Chosen because OD values are less than one and because we want to give equal prior probability to all values in the [0, 1] interval.
   T_max = "dnorm(46, 1 / 2^2)", ## Normal prior with mu=46, sigma=2. Assumes 95% prior CI of approximately [42°C, 50°C].
   T_min = "dnorm(10, 1 / 5^2)", ## Normal prior with mu=10, sigma=5. Assumes 95% prior CI of approximately [0°C, 20°C]
   alpha = "dunif(0, 1)", ## Uniform prior in alpha places equal prior probability on T_opt being anywhere in-between T_min and T_max.
@@ -206,7 +206,7 @@ cat(configure_model(flexTPC_normal))
 Now let's get the data in the right shape and fit the flexTPC model to all these conditions.
 
 ```{r}
-#| cache: true
+#| cache: false
 nodrug.data.bTPC<-list(Trait = nodrug$OD, Temp=nodrug$T)
 nodrugFit <- b_TPC(data = nodrug.data.bTPC, ## data
                      model = 'flexTPC_normal', ## model to fit
@@ -264,9 +264,9 @@ par(mfrow=c(3, 2))
 traceplot(ERYFit, burn=10000)
 ```
 
-We can see than not all of our samples look like a "hairy caterpillar". As can be seen in the traceplot for $r_{\max}$, occassionally the samples seem to "get stuck" in some regions of the parameter space. This means the MCMC chains may be converging slowly for some parameters.
+We can see than not all of our samples look like a "hairy caterpillar". As can be seen in the traceplot for $r_{\max}$, ocassionally the samples seem to "get stuck" in some regions of the parameter space. This means the MCMC chains may be converging slowly for some parameters.
 
-A few other things can help with convergence of the MCMC chains:
+There's a few things that can help with convergence of the MCMC chains:
 
 -   Try another sampler.
 
@@ -276,9 +276,9 @@ A few other things can help with convergence of the MCMC chains:
 
 -   Run the chains for longer.
 
-There are also some diagnostics based on running multiple chains (ideally started from different initial values) that can help us evaluate convergence based on how similar the samples from the different chains are to each other. Future versions of flexTPC will include the ability to run multiple chains and some of these diagnostics.
+There are also some diagnostics based on running multiple chains (ideally started from different initial values) that can help us evaluate convergence based on how similar the samples from the different chains are to each other. Future versions of bayesTPC will include the ability to run multiple chains and some of these diagnostics.
 
-In this tutorial we're running the chains for 50000 iterations (instead of 10000 as in previous examples) and providing reasonable initial values. For final results, we'd likely run the chains even longer to be safe, although it wouldn't be practical to do this here due to time constraints.
+In this tutorial we're running the chains for 50000 iterations (instead of 10000 as in previous examples) and providing reasonable initial values which improved sampling compared to initial experiments with shorter runs. For final results, we'd likely run the chains even longer to be safe, although it wouldn't be practical to do this here due to time constraints.
 
 However, most of the parameters show good mixing and the TPCs we get look reasonable when plotted with the data (see below). So it's likely OK to use our samples for the analysis.
 
@@ -294,7 +294,7 @@ head(nodrugFit$samples)
 
 Each row corresponds to the values of the parameters in one iteration of the chain. Once the MCMC chain has reached convergence, each iteration corresponds to drawing a sample from the posterior distribution.
 
-We can plot the posterior distribution for the individual parameters using these samples. For example, we may want to compare the height of the TPCs (which corresponds to parameter \$r\_{\max}\$) between the different antibiotic backgrounds. In this data, this would correspond to the maximum number of bacteria that grow under the corresponding antibiotic condition at any temperature.
+We can plot the posterior distribution for the individual parameters using these samples. For example, we may want to compare the height of the TPCs (which corresponds to parameter $r_{\max}$) between the different antibiotic backgrounds. In this data, this would correspond to the maximum OD (proportional to number of bacteria) that grow under the corresponding antibiotic condition at any temperature.
 
 ```{r}
 par(mfrow=c(2, 2))
@@ -326,7 +326,7 @@ quantile(bothFit$samples[, "r_max"] - nodrugFit$samples[, "r_max"], c(0.025, 0.5
 
 In the flexTPC model we have an explicit equation for the optimal temperature
 
-$$ T_{\mathrm{opt}}= \alpha T_{\max} + (1 - \alpha) T_{\min} $$
+$$ T_{\mathrm{opt}} = \alpha T_{\max} + (1 - \alpha) T_{\min} $$
 
 Using this equation, we can also get posterior samples for $T_{\mathrm{opt}}$ by transforming the posterior samples for $T_{\min}$, $T_{\max}$ and $\alpha$. For example, for the no-antibiotics condition,
 
@@ -347,11 +347,13 @@ mean(T_opt_samples)
 quantile(T_opt_samples, c(0.025, 0.5, 0.975))
 ```
 
-We can follow a similar approach to obtain the posterior distribution of the value of the curve at any temperature (or a grid of temperatures). In this case, the transformation of the parameters we want is simply the equation for the flexTPC model itself to get the posterior distribution of the TPC at temperature $T$. We can then directly calculate medians and credible intervals to plot the TPCs.
+We can follow a similar approach to obtain the posterior distribution of the value of the curve at any temperature (or a grid of temperatures). In this case, the transformation of the parameters we want is simply the equation for the flexTPC model itself. With this equation, we can get the posterior distribution of the TPC at specific temperatures. We can then directly calculate medians and credible intervals to plot the TPCs.
 
-It can be useful to calculate these values directly if we want to customize our plots to make them nicer compared to the `bayesTPC` defaults:
+It can be useful to calculate these values directly if we want to customize our plots to make them nicer compared to the bayesTPC defaults. Let's look at an example:
 
 ```{r}
+#| cache: false
+
 ## Grid of temperatures to use to plot the TPCs.
 temp <- seq(11, 49, 0.1)
 
@@ -403,6 +405,8 @@ polygon(c(temp, rev(temp)), c(apply(bothcurves, 1, quantile, 0.025),
 We can also plot all the TPCs together to more easily compare them.
 
 ```{r}
+#| cache: true
+
 par(mfrow=c(1,1))
 temp <- seq(10, 50, 0.1)
 plot("", "", xlab="Temperature [°C]", ylab="OD", main="All TPCs", ylim=c(0, 1), xlim=c(10, 50))
@@ -439,13 +443,17 @@ Here, the curve with no antibiotics is shown in black. We can see that the GEN+E
 
 ## Model selection
 
-In this section, we show how we can compare between different models with `bayesTPC` using WAIC. We will compare two candidate models:
+In this section, we show how we can compare between different models with bayesTPC using WAIC. We will compare two candidate models:
 
 a\) A single TPC model for all of the antibiotic conditions. This corresponds to a null hypothesis of antibiotics not affecting the thermal performance curve.
 
 b\) Separate TPC models for each antibiotic background, as we had before.
 
+Let's fit the model that treats all data as coming from the same thermal performance curve.
+
 ```{r}
+#| cache: false
+
 # Make a single dataset with all data.
 allconds <- bind_rows(nodrug, GEN, ERY, both)
 allconds.data.bTPC<-list(Trait = allconds$OD, Temp=allconds$T)
@@ -459,6 +467,8 @@ allcondsFit <- b_TPC(data = allconds.data.bTPC, ## data
 ) 
 ```
 
+Now let's plot the TPC fit of the null-hypothesis model:
+
 ```{r}
 plot(allconds$T, allconds$OD, xlab="Temperature [°C]", ylab="OD", main="All data together", ylim=c(0, 1), xlim=c(10, 50))
 accurves <- apply(allcondsFit$samples, 1, function(x) flexTPC(temp, x[['T_min']], x[['T_max']],
@@ -470,20 +480,27 @@ polygon(c(temp, rev(temp)), c(apply(accurves, 1, quantile, 0.025),
         col=alpha("black", 0.3), lty=0)
 ```
 
-Now we can do model selection through WAIC. First, let's find the WAIC for the single curve.
+We can now do model selection through WAIC. First, let's find the WAIC for the single curve.
 
 ```{r}
-allcondsFit$mcmc$getWAIC()$WAIC
+bayesTPC::get_WAIC(allcondsFit)
 ```
 
-We can now find the WAICs from the individual curves. WAIC is additive, so we can simply add the WAICs for the individual curves to get a value that we can compare to that calculated above.
+This gives us three values: WAIC (the main quantity we're interested in), and two terms that are used to calculate the WAIC. These are the lppd (which measures how well the model fits the data) and pWAIC (a way to measure model complexity that depends on the number of parameters and how constrained they are by the priors). We can access the WAIC value itself with the following code:
 
 ```{r}
-(nodrugFit$mcmc$getWAIC()$WAIC + ERYFit$mcmc$getWAIC()$WAIC + GENFit$mcmc$getWAIC()$WAIC + bothFit$mcmc$getWAIC()$WAIC)
+bayesTPC::get_WAIC(allcondsFit)[["WAIC"]]
+```
+
+We can now find the WAICs from the individual curves. WAIC is additive, so we can simply add the WAICs for the individual curves to get a value that we can compare to the one we calculated above for the null model.
+
+```{r}
+nodrugWAIC <- bayesTPC::get_WAIC(nodrugFit)[["WAIC"]] 
+ERYWAIC <- bayesTPC::get_WAIC(ERYFit)[["WAIC"]]
+GENWAIC <- bayesTPC::get_WAIC(GENFit)[["WAIC"]]  
+bothWAIC <- bayesTPC::get_WAIC(bothFit)[["WAIC"]]
+
+nodrugWAIC + ERYWAIC + GENWAIC + bothWAIC
 ```
 
 The WAIC for the individual curves is much lower (more negative) than for the single curve describing all data. Based on this, modeling this data as individual TPCs is preferred compared to having a single curve for all conditions.
-
-However, we get some warnings about the WAIC estimates for the individual curves potentially being unstable. These are likely due to the smaller sample size, which makes some individual data points very influential in the WAIC calculation.
-
-In this case, the difference between the WAICs is so large that this potential inaccuracy is not likely to lead to choosing the wrong model. However, to be safe, the WAIC could be compared to other model selection criteria like cross validation (currently not implemented in `bayesTPC`).
