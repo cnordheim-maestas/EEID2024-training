@@ -44,7 +44,7 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 ## Introduction to traits in Disease modeling
 
--   [Lecture slides: Coming Soon]()
+-   [Lecture slides](intro_to_traits.pdf)
 
 -   [Cator *et al*. 2020. The Role of Vector Trait Variation in Vector-Borne Disease Dynamics](Cator2020.pdf)
 
@@ -83,7 +83,7 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 ## Advanced features in `bayesTPC`
 
--   [Practical: Coming Soon](bayesTPC_advanced.qmd)
+-   [Practical](bayesTPC_advanced.qmd)
 
 
 <br> <br>
