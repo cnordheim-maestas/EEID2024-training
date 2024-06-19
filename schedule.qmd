@@ -21,7 +21,7 @@ You can access to activities, lectures, and readings in [materials](materials.ht
 | Time | Activity                       | Material          |
 |------|--------------------------------|-------------------|
 |09:00 |Introductions & course overview |                   |
-|09:30 |Introduction to traits and disease modeling |[slides]() |
+|09:30 |Introduction to traits and disease modeling |[slides](intro_to_traits.pdf) |
 |10:00 |Goal setting                    |                   |
 |10:15 |Lightning introductions and goals|                  |
 |10:35 |Break                           |                   |
