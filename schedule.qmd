@@ -50,7 +50,7 @@ You can access to activities, lectures, and readings in [materials](materials.ht
 
 | Time | Activity                       | Material          |
 |------|--------------------------------|-------------------|
-|09:00 |Advance topic using `bayesTPC`  |                   |
+|09:00 |Advanced topics using `bayesTPC`|[Practice](bayesTPC_advanced.qmd)  |
 |10:00 |Break                           |                   |
 |10:15 |Work on project analysis        |                   |
 |11:15 |Preparing a follow-up slide     |                   |
