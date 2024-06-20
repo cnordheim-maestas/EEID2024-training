@@ -30,12 +30,13 @@ library(kableExtra)
 library(xtable)
 library(viridis)
 
+
 options(stringsAsFactors=FALSE)
 knit_hooks$set(no.main = function(before, options, envir) {
     if (before) par(mar = c(4.1, 4.1, 1.1, 1.1))  # smaller margin on top
 })
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_knit$set(width = 60)
+knitr::opts_knit$set(width = 70)
 source("my_knitter.R")
 #library(tidyverse)
 #library(reshape2)
@@ -78,7 +79,8 @@ $$
 
 ## What is Bayesian Inference?
 
-We can re-write Bayes rule in terms of our parameters, $\theta$ and our data, $Y$: \begin{align*}
+We can re-write Bayes rule in terms of our parameters, $\theta$ and our data, $Y$: 
+\begin{align*}
 \text{Pr}(\theta|Y) & = \frac{\text{Pr}(Y|\theta)\text{Pr}(\theta)}{\text{Pr}(Y)} 
 \end{align*}
 
@@ -179,7 +181,8 @@ plot(x, dbeta(x, 2, 20), type="l", col="grey", xlab="", ylab="density", lwd=3, y
 The prior and sample model combination: \begin{align*}
 \theta & \sim  \mathrm{Beta} (a,b) \\
 Y|\theta &  \sim  \mathrm{Bin} (n, \theta)
-\end{align*} and an observed $y$ (the data), leads to the `r myblue("posterior")` $$
+\end{align*} and an observed $y$ (the data), leads to the `r myblue("posterior")` 
+$$
 p(\theta|y)= \mathrm{Beta}(a+y, b+n-y)
 $$
 
@@ -187,7 +190,8 @@ $$
 
 For our case, we have $a=2$, $b=20$, $n=20$.
 
-If we don't find any infections ($y=0$) our posterior is: $$
+If we don't find any infections ($y=0$) our posterior is: 
+$$
 p(\theta |y=0)= \mathrm{Beta}(2, 40)
 $$
 
@@ -384,7 +388,7 @@ The 95 % HPD region is \[0.04, 0.48\] which is narrower than the quantile-based 
 
 `r myred("Exercise: Is a treatment for cancer effective?")`
 
-We have data on $n$ cancer patients that have been given a treatment. Our outcome variable is whether or not it was \`\`effective'':
+We have data on $n$ cancer patients that have been given a treatment. Our outcome variable is whether or not it was "effective":
 
 | Patient  | Effectiveness | Numerical Data |
 |:--------:|:-------------:|:--------------:|
@@ -392,6 +396,9 @@ We have data on $n$ cancer patients that have been given a treatment. Our outcom
 |    2     |       N       |       0        |
 |    3     |       Y       |       1        |
 | $\vdots$ |   $\vdots$    |    $\vdots$    |
+
+
+-------------------------------------
 
 The appropriate sampling model for each patient is a Bernoilli: $$Y_i|\theta  \stackrel{iid}{\sim} f(Y|\theta) = \text{Bern}(\theta)$$ where $\theta$ is the success rate of the treatment. Write down the likelihood for the $n$ patients. Then, assuming a $\mathrm{Beta}(a,b)$ prior for $\theta$, find the posterior distribution for $\theta|Y$. Does this look familiar?
 
