@@ -37,7 +37,7 @@ knit_hooks$set(no.main = function(before, options, envir) {
     if (before) par(mar = c(4.1, 4.1, 1.1, 1.1))  # smaller margin on top
 })
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_knit$set(width = 60)
+knitr::opts_knit$set(width = 70)
 source("my_knitter.R")
 #library(tidyverse)
 #library(reshape2)
@@ -140,7 +140,6 @@ Using MC to perform these calculations (and to propagate the uncertainty) rests 
 2.  Find the $\alpha/2$ and $1-\alpha/2$ empirical quantiles (here 4% and 96%). For example these can be approximated by the $N \times \left( \frac{\alpha}{2} , 1-\frac{\alpha}{2} \right)$ order statistics.
 3.  You're done.
 
-`r sk1()`
 
 ```{r echo=TRUE}
 alpha<-0.04; N<-2000
@@ -152,9 +151,7 @@ round(x[w], 3) ## CI
 
 ## Markov Chain MC (MCMC)
 
-MCMC is the most commonly used numerical algorithm for generating posterior samples.
-
-`r sk1()` A `r myblue("Markov Chain")` is a sequence of randomly generated numbers where each draw depends on the one immediately preceding it.
+MCMC is the most commonly used numerical algorithm for generating posterior samples. A `r myblue("Markov Chain")` is a sequence of randomly generated numbers where each draw depends on the one immediately preceding it.
 
 ![Plot -- Ian Murray (http://mlg.eng.cam.ac.uk/zoubin/tut06/mcmc.pdf)](MCMC.jpg){fig-align="center"}
 
@@ -172,26 +169,25 @@ We can treat the draws much like we would data:
 -   Calculate precision of the summaries (e.g., sample variance)
 -   CIs via quantiles (order statistics of the data) or HPD intervals (using ${\tt CODA}$ package in ${\tt R}$)
 
-`r sk1()`
+
+
+## What do we do with Posterior Samples?
 
 If the samples are parameters in a complex model, we can plug them all in, one at a time, to get a range of possible predictions from the model (we'll see this in the practical bit, later on).
 
-## Models Comparison via (DIC)
 
-The `r myblue(" Deviance Information Criterion")` (DIC) seeks to judge a model on how well it fits, penalized by the complexity of the model: $$
-DIC = D(\bar{\theta}) + 2p_D
-$$ where:
+## Model Comparison options
 
--   Deviance: $D(\theta)=-2\log(\mathcal{L}(\theta; y)) + C$
--   Penalty: $p_D = \bar{D} -D(\bar{\theta})$
--   $D(\bar{\theta})$: deviance at the posterior mean of $\theta$
--   $\bar{D}$: average deviance across the posterior samples.
+We often use `r myblue("Information Criterion")` to compare between models. You may be familiar with AIC. But we want to use something different when we're doing sample-based Bayesian comparisons. 
 
-\hfill $\rightarrow$ `r myred("Already implemented in nimble!")`
+The two most common are `r myblue(" Deviance Information Criterion")` (DIC) and `r myred("widely-Applicable Information Criterion")` (wAIC). Both seeks to judge a model on how well it fits (based on the likelihood), penalized by the complexity of the model.
 
-## Bayesian using nimble/JAGS
+Both are implemented in `nimble`. Typically **wAIC** is preferred because it is more numerically stable (DIC can be led astray by poor MCMC samples). 
 
-Both nimble and JAGS implement Gibbs sampling/MCMC in a fairly easy to use package that you can call from R. Models are encoded using the BUGS language.
+
+## Bayesian analysis using nimble/JAGS 
+
+Both `nimble` and JAGS implement Gibbs sampling/MCMC in a fairly easy to use package that you can call from R. Models are encoded using the BUGS language.
 
 `r sk1()`
 
@@ -206,6 +202,14 @@ The trickiest and most important part of each analysis is properly specifying th
 -   What is the relationship between your predictors and your response?
 -   What kind of probability distribution should you use to describe your response variable?
 -   Are there any constraints on your parameters or responses that you need to encode in your prior or likelihood, respectively?
+
+## `bayesTPC` philosophy for fitting TPCs
+
+Because there are a lot of decisions to make for a novice when using `nimble` or `JAGS/rjags` directly, we developed `bayesTPC` which implements some reasonable defaults for a specific group of functions that are used to describe `mygrn("Thermal Performance Curves")` (TPCs). You choose one of the built-in TPC functions (the relationship between predictors and response). We choose:
+
+- a default likelihood (usually a truncated normal)
+- default priors for parameters for the TPC functions
+
 
 ## Next Steps
 

@@ -670,7 +670,7 @@ P(l(y) &lt;\theta &lt; u(y)|Y=y)=0.95
 <section class="slide level2">
 
 <p><span style="color: red;">Exercise: Is a treatment for cancer effective?</span></p>
-<p>We have data on <span class="math inline">\(n\)</span> cancer patients that have been given a treatment. Our outcome variable is whether or not it was ``effective’’:</p>
+<p>We have data on <span class="math inline">\(n\)</span> cancer patients that have been given a treatment. Our outcome variable is whether or not it was “effective”:</p>
 <table>
 <thead>
 <tr class="header">
@@ -702,6 +702,9 @@ P(l(y) &lt;\theta &lt; u(y)|Y=y)=0.95
 </tr>
 </tbody>
 </table>
+</section>
+<section class="slide level2">
+
 <p>The appropriate sampling model for each patient is a Bernoilli: <span class="math display">\[Y_i|\theta  \stackrel{iid}{\sim} f(Y|\theta) = \text{Bern}(\theta)\]</span> where <span class="math inline">\(\theta\)</span> is the success rate of the treatment. Write down the likelihood for the <span class="math inline">\(n\)</span> patients. Then, assuming a <span class="math inline">\(\mathrm{Beta}(a,b)\)</span> prior for <span class="math inline">\(\theta\)</span>, find the posterior distribution for <span class="math inline">\(\theta|Y\)</span>. Does this look familiar?</p>
 </section>
 <section id="next-steps" class="slide level2">

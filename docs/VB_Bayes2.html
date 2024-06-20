@@ -477,7 +477,6 @@ and MCMC</div><p></p>
 <li>Find the <span class="math inline">\(\alpha/2\)</span> and <span class="math inline">\(1-\alpha/2\)</span> empirical quantiles (here 4% and 96%). For example these can be approximated by the <span class="math inline">\(N \times \left( \frac{\alpha}{2} , 1-\frac{\alpha}{2} \right)\)</span> order statistics.</li>
 <li>You’re done.</li>
 </ol>
-<p><br></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>alpha<span class="ot">&lt;-</span><span class="fl">0.04</span>; N<span class="ot">&lt;-</span><span class="dv">2000</span></span>
 <span id="cb1-2"><a></a>x<span class="ot">&lt;-</span><span class="fu">rbeta</span>(N, <span class="dv">2</span>, <span class="dv">20</span>) <span class="do">## take samples</span></span>
@@ -489,8 +488,7 @@ and MCMC</div><p></p>
 </section>
 <section id="markov-chain-mc-mcmc" class="slide level2">
 <h2>Markov Chain MC (MCMC)</h2>
-<p>MCMC is the most commonly used numerical algorithm for generating posterior samples.</p>
-<p><br> A <span style="color: dodgerblue;">Markov Chain</span> is a sequence of randomly generated numbers where each draw depends on the one immediately preceding it.</p>
+<p>MCMC is the most commonly used numerical algorithm for generating posterior samples. A <span style="color: dodgerblue;">Markov Chain</span> is a sequence of randomly generated numbers where each draw depends on the one immediately preceding it.</p>
 
 <img data-src="MCMC.jpg" class="r-stretch quarto-figure-center"><p class="caption">Plot – Ian Murray (http://mlg.eng.cam.ac.uk/zoubin/tut06/mcmc.pdf)</p></section>
 <section id="gibbs-sampling" class="slide level2">
@@ -506,25 +504,20 @@ and MCMC</div><p></p>
 <li>Calculate precision of the summaries (e.g., sample variance)</li>
 <li>CIs via quantiles (order statistics of the data) or HPD intervals (using <span class="math inline">\({\tt CODA}\)</span> package in <span class="math inline">\({\tt R}\)</span>)</li>
 </ul>
-<p><br></p>
+</section>
+<section id="what-do-we-do-with-posterior-samples-1" class="slide level2">
+<h2>What do we do with Posterior Samples?</h2>
 <p>If the samples are parameters in a complex model, we can plug them all in, one at a time, to get a range of possible predictions from the model (we’ll see this in the practical bit, later on).</p>
 </section>
-<section id="models-comparison-via-dic" class="slide level2">
-<h2>Models Comparison via (DIC)</h2>
-<p>The <span style="color: dodgerblue;"> Deviance Information Criterion</span> (DIC) seeks to judge a model on how well it fits, penalized by the complexity of the model: <span class="math display">\[
-DIC = D(\bar{\theta}) + 2p_D
-\]</span> where:</p>
-<ul>
-<li>Deviance: <span class="math inline">\(D(\theta)=-2\log(\mathcal{L}(\theta; y)) + C\)</span></li>
-<li>Penalty: <span class="math inline">\(p_D = \bar{D} -D(\bar{\theta})\)</span></li>
-<li><span class="math inline">\(D(\bar{\theta})\)</span>: deviance at the posterior mean of <span class="math inline">\(\theta\)</span></li>
-<li><span class="math inline">\(\bar{D}\)</span>: average deviance across the posterior samples.</li>
-</ul>
-<p><span class="math inline">\(\rightarrow\)</span> <span style="color: red;">Already implemented in nimble!</span></p>
+<section id="model-comparison-options" class="slide level2">
+<h2>Model Comparison options</h2>
+<p>We often use <span style="color: dodgerblue;">Information Criterion</span> to compare between models. You may be familiar with AIC. But we want to use something different when we’re doing sample-based Bayesian comparisons.</p>
+<p>The two most common are <span style="color: dodgerblue;"> Deviance Information Criterion</span> (DIC) and <span style="color: red;">widely-Applicable Information Criterion</span> (wAIC). Both seeks to judge a model on how well it fits (based on the likelihood), penalized by the complexity of the model.</p>
+<p>Both are implemented in <code>nimble</code>. Typically <strong>wAIC</strong> is preferred because it is more numerically stable (DIC can be led astray by poor MCMC samples).</p>
 </section>
-<section id="bayesian-using-nimblejags" class="slide level2">
-<h2>Bayesian using nimble/JAGS</h2>
-<p>Both nimble and JAGS implement Gibbs sampling/MCMC in a fairly easy to use package that you can call from R. Models are encoded using the BUGS language.</p>
+<section id="bayesian-analysis-using-nimblejags" class="slide level2">
+<h2>Bayesian analysis using nimble/JAGS</h2>
+<p>Both <code>nimble</code> and JAGS implement Gibbs sampling/MCMC in a fairly easy to use package that you can call from R. Models are encoded using the BUGS language.</p>
 <p><br></p>
 <p>That is, once you specify the appropriate <strong><span style="color: dodgerblue;">sampling distribution/likelihood</span></strong> and any <strong><span style="color: red;">priors</span></strong> for the parameters, it will use MCMC to obtain samples from the posterior in the right ratios so that we can calculate whatever we want.</p>
 </section>
@@ -536,6 +529,14 @@ DIC = D(\bar{\theta}) + 2p_D
 <li>What is the relationship between your predictors and your response?</li>
 <li>What kind of probability distribution should you use to describe your response variable?</li>
 <li>Are there any constraints on your parameters or responses that you need to encode in your prior or likelihood, respectively?</li>
+</ul>
+</section>
+<section id="bayestpc-philosophy-for-fitting-tpcs" class="slide level2">
+<h2><code>bayesTPC</code> philosophy for fitting TPCs</h2>
+<p>Because there are a lot of decisions to make for a novice when using <code>nimble</code> or <code>JAGS/rjags</code> directly, we developed <code>bayesTPC</code> which implements some reasonable defaults for a specific group of functions that are used to describe <code>mygrn("Thermal Performance Curves")</code> (TPCs). You choose one of the built-in TPC functions (the relationship between predictors and response). We choose:</p>
+<ul>
+<li>a default likelihood (usually a truncated normal)</li>
+<li>default priors for parameters for the TPC functions</li>
 </ul>
 </section>
 <section id="next-steps" class="slide level2">
