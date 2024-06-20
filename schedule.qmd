@@ -21,12 +21,12 @@ You can access to activities, lectures, and readings in [materials](materials.ht
 | Time | Activity                       | Material          |
 |------|--------------------------------|-------------------|
 |09:00 |Introductions & course overview |                   |
-|09:30 |Introduction to traits and disease modeling |[slides](intro_to_traits.pdf) |
+|09:30 |Introduction to traits and disease modeling |[Lecture Slides](intro_to_traits.pdf) |
 |10:00 |Goal setting                    |                   |
 |10:15 |Lightning introductions and goals|                  |
 |10:35 |Break                           |                   |
-|11:00 |Introducing tools: Downloading and installing `bayesTPC`, VecTraits database|[slides]() |
-|11:40 |Practice: Visualizing traits data |[Practice]()     |
+|11:00 |Introducing tools: Downloading and installing `bayesTPC`, VecTraits database|[Lecture Slides](EEID_Tools.qmd) |
+|11:40 |Practical: Pulling and visualizing data from VecTraits  |[Practical]()     |
 |12:00 |End of day 1                    |                   |
 
 <br> <br>
@@ -35,11 +35,11 @@ You can access to activities, lectures, and readings in [materials](materials.ht
 
 | Time | Activity                       | Material          |
 |------|--------------------------------|-------------------|
-|12:30 |Introductions to Bayes          |[Practice](VB_Bayes_activity1.qmd) |
+|12:30 |Introductions to Bayes          |[Lecture Slides](VB_Bayes1.qmd), [Practical](VB_Bayes_activity1.qmd)|
 |13:45 |Break                           |                   |
-|14:00 |Bayesian computation            |[Practice](VB_Bayes_activity2.Qmd) |
+|14:00 |Bayesian computation            |[Lecture Slides](VB_Bayes2.Qmd), [Practical](VB_Bayes_activity2.Qmd) |
 |15:15 |Break                           |                   |
-|15:30 |Using `bayesTPC` (practical)    |[Practice](bayesTPC_activity.qmd) |
+|15:30 |Practical: Using `bayesTPC`   |[Practical](bayesTPC_activity.qmd) |
 |16:45 |Proposing project analysis      |                   |
 |17:10 |Lightning presentations of project ideas |          |
 |17:30 |End of session                  |                   |
@@ -50,7 +50,7 @@ You can access to activities, lectures, and readings in [materials](materials.ht
 
 | Time | Activity                       | Material          |
 |------|--------------------------------|-------------------|
-|09:00 |Advanced topics using `bayesTPC`|[Practice](bayesTPC_advanced.qmd)  |
+|09:00 |Advanced topics using `bayesTPC`|[Practical](bayesTPC_advanced.qmd)  |
 |10:00 |Break                           |                   |
 |10:15 |Work on project analysis        |                   |
 |11:15 |Preparing a follow-up slide     |                   |

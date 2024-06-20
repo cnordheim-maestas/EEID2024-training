@@ -61,7 +61,7 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 ## Intro to Bayes
 
--   [Lecture Slides](VB_Bayes1.qmd), [Practical 1](VB_Bayes_activity1.qmd)
+-   [Lecture Slides](VB_Bayes1.qmd), [Practical](VB_Bayes_activity1.qmd)
 -   Datasets:
     -   [Midge data](MidgeWingLength.csv)
 
@@ -69,7 +69,7 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 ## Bayesian computation and MCMC
 
--   [Lecture Slides](VB_Bayes2.Qmd), [Practical 2A](VB_Bayes_activity2.Qmd)
+-   [Lecture Slides](VB_Bayes2.Qmd), [Practical](VB_Bayes_activity2.Qmd)
 
 <br> <br>
 

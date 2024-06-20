@@ -206,7 +206,7 @@ cat(configure_model(flexTPC_normal))
 Now let's get the data in the right shape and fit the flexTPC model to all these conditions.
 
 ```{r}
-#| cache: false
+#| cache: true
 nodrug.data.bTPC<-list(Trait = nodrug$OD, Temp=nodrug$T)
 nodrugFit <- b_TPC(data = nodrug.data.bTPC, ## data
                      model = 'flexTPC_normal', ## model to fit
@@ -452,7 +452,7 @@ b\) Separate TPC models for each antibiotic background, as we had before.
 Let's fit the model that treats all data as coming from the same thermal performance curve.
 
 ```{r}
-#| cache: false
+#| cache: true
 
 # Make a single dataset with all data.
 allconds <- bind_rows(nodrug, GEN, ERY, both)
@@ -483,18 +483,25 @@ polygon(c(temp, rev(temp)), c(apply(accurves, 1, quantile, 0.025),
 We can now do model selection through WAIC. First, let's find the WAIC for the single curve.
 
 ```{r}
+#| cache: true
+
 bayesTPC::get_WAIC(allcondsFit)
 ```
 
 This gives us three values: WAIC (the main quantity we're interested in), and two terms that are used to calculate the WAIC. These are the lppd (which measures how well the model fits the data) and pWAIC (a way to measure model complexity that depends on the number of parameters and how constrained they are by the priors). We can access the WAIC value itself with the following code:
 
 ```{r}
+#| cache: true
+
 bayesTPC::get_WAIC(allcondsFit)[["WAIC"]]
 ```
 
 We can now find the WAICs from the individual curves. WAIC is additive, so we can simply add the WAICs for the individual curves to get a value that we can compare to the one we calculated above for the null model.
 
 ```{r}
+#| cache: true
+
+
 nodrugWAIC <- bayesTPC::get_WAIC(nodrugFit)[["WAIC"]] 
 ERYWAIC <- bayesTPC::get_WAIC(ERYFit)[["WAIC"]]
 GENWAIC <- bayesTPC::get_WAIC(GENFit)[["WAIC"]]  
