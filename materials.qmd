@@ -53,7 +53,7 @@ We are assuming familiarity with R basics as well as at least introductory stati
 
 ## Intro to Course Tools
 
--   [Lecture Slides](EEID_Tools.qmd), [Practical: Coming Soon]()
+-   [Lecture Slides](EEID_Tools.qmd), [Practical](Intro_to_API.qmd)
 
 
 <br> <br>

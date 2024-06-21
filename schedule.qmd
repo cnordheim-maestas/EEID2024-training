@@ -26,7 +26,7 @@ You can access to activities, lectures, and readings in [materials](materials.ht
 |10:15 |Lightning introductions and goals|                  |
 |10:35 |Break                           |                   |
 |11:00 |Introducing tools: Downloading and installing `bayesTPC`, VecTraits database|[Lecture Slides](EEID_Tools.qmd) |
-|11:40 |Practical: Pulling and visualizing data from VecTraits  |[Practical]()     |
+|11:40 |Practical: Pulling and visualizing data from VecTraits  |[Practical](Intro_to_API.qmd)     |
 |12:00 |End of day 1                    |                   |
 
 <br> <br>

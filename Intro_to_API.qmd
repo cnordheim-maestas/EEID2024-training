@@ -1,0 +1,220 @@
+---
+title: "Intro to course tools: VectorByte Dataset Access Functions"
+format:
+  html:
+    toc: true
+    toc-location: left
+    html-math-method: katex
+    css: styles.css
+---
+
+This section will cover the exploration of of the [VecTraits](https://vectorbyte.crc.nd.edu/vectraits-explorer) database and the functions included in the package `bayesTPC` to access to specific data. 
+
+## Installing `bayesTPC` package
+
+Lets start installing the package `bayesTPC`. It is important to have some packages installed in advance. The package `bayesTPC` uses some functionality from the package `nimble`. It is also useful to install the package `remotes` to install `bayesTPC` from the repository. To do so, you can run the following codes:
+
+```{r, eval=FALSE}
+# Run any of the following if you don't have them installed yet
+install.packages("nimble") 
+install.packages("remotes")
+```
+
+To install the package `bayesTPC`, you can use the following line of code:
+
+```{r, eval=FALSE}
+remotes::install_github("johnwilliamsmithjr/bayesTPC")
+```
+
+## Getting to know the VecTraits database
+
+Explore the [VecTraits](https://vectorbyte.crc.nd.edu/vectraits-explorer) database. Notice that you can search datasets by filtering according to traits, variables, genus, etc. We encourage you to identify some datasets that meets your particular interests.
+
+## Pulling data into `R` using the VecTraits API (Application Programming Interface) from `bayesTPC`
+
+This section will walk you through the functions included in `bayesTPC` to retrieve data from [VecTraits](https://vectorbyte.crc.nd.edu/vectraits-explorer) database
+
+Load some packages...
+
+```{r results='hide',message=FALSE}
+library(nimble)
+library(bayesTPC)
+library(tidyverse)
+```
+
+Next, we are going to use some functions to extract specific datasets. We can use the function `get_dataset()` to extract a single one:
+
+```{r}
+dataset50 <- get_dataset(50) # Get dataset with ID 50
+head(dataset50)
+```
+
+## Retrieve Multiple Datasets
+
+Get a list of datasets by their ID numbers.
+
+format:
+`get_datasets(<Vector or sequence of IDs>)`
+
+```{r}
+list_of_dataframes <- get_datasets(c(1:10))
+```
+
+Use `do.call` and `lapply` to create a single dataframe containing all of the datasets you pulled in the previous step:
+
+```{r}
+datasets1to10 <- do.call(rbind,lapply(list_of_dataframes, data.frame, stringsAsFactors=FALSE))
+head(datasets1to10)
+```
+
+## Search for and list datasets on a specific genus
+
+```{r}
+list_of_sepedon <- find_datasets("Sepedon")
+```
+
+### Other options
+
+Format:
+
+`list_of_dataframes <- get_datasets(<Vector or Range of IDs>)`
+
+Examples:
+
+```{r}
+list_of_dataframes <- get_datasets(c(10, 20, 35)) # Get datasets 10, 20, and 35
+list_of_dataframes <- get_datasets(seq(200, 240, 10)) # Get datasets 200, 210, 220, 230, and 240
+list_of_dataframes <- get_datasets(c(50, 1, 580, 20)) # Get datasets 1, 20, 50, and 580
+list_of_dataframes <- get_datasets(320:324) # Get datasets 320, 321, 322, 323, and 324
+```
+
+### Retrieve List of Datasets Related To Keyword
+
+Format: `list_of_dataframes <- find_datasets(<Keyword>)`
+
+Examples:
+
+```{r, eval=FALSE}
+list_of_tiger_dataframes <- find_datasets("tiger mosquito") # Get datasets related to tiger mosquitos
+```
+
+Probably you won't be able to get a full list of datasets because the high number of datasets. If that is the case, you can use the argument `safety = FALSE`.
+
+```{r}
+list_of_tiger_dataframes <- find_datasets("tiger mosquito", safety = FALSE)
+```
+
+Another option would be refine the search by adding multiple keywords.
+
+Format: `list_of_dataframes <- find_datasets(<Vector of Keywords>)`
+
+Examples:
+
+(All the following retrieve datasets related to yellow fever & terrestrial areas in North Carolina)
+
+```{r}
+list_of_dataframes <- find_datasets(c("terrestrial", "north carolina", "yellow fever"))
+list_of_dataframes <- find_datasets(c("terrestrial", "north carolina", "yellow fever"))
+list_of_dataframes <- find_datasets(c("TERRESTRIAL", "NORTH CAROLINA", "YELLOW FEVER"))
+list_of_dataframes <- find_datasets(c("tERRestRiAL", "NoRTh CARoLina", "YELLow feVer"))
+```
+
+### The `pick()` Function
+
+If all the information above was too much and there’s no way you’re going to remember it, all you need to know is the `pick()` function. The `pick()` function displays a small menu and allows you to choose an option in order for you to find and retrieve whatever dataset(s) you may be looking for.
+
+Format:
+
+`x <- pick()`
+
+### Access Dataframes In Lists
+
+When multiple datasets are retrieved and stored in a list of dataframes, you can access individual datasets with the following format:
+
+`first_dataframe <- list_of_dataframes[[1]]`
+
+`second_dataframe <- list_of_dataframes[[2]]`
+
+...and so on for every dataframe in the list.
+
+Example:
+
+To print a list of the names of those who contributed to the datasets related to tiger mosquitos:
+
+```{r}
+for (i in 1:length(list_of_tiger_dataframes)) {
+  print(list_of_tiger_dataframes[[i]]$SubmittedBy[1])
+}
+```
+
+or retrieve the IDs:
+
+```{r}
+for (i in 1:length(list_of_tiger_dataframes)) {
+  print(list_of_tiger_dataframes[[i]]$DatasetID[1])
+}
+```
+
+###   Access Data In Dataframes
+
+To access variable `x` in row `y` of a dataset stored as a dataframe, use the `$` symbol and square brackets `[]`:
+
+`variable_value <- dataframe$x[y]`
+
+For example, if you had a dataset stored as a dataframe and you wanted to know the Genus of Interactor 1 in the fifth row, you could get that with the following code:
+
+```{r}
+dataset50$Interactor1Genus[5]
+```
+
+The same format also works for dataframes in lists. For example, you could run the following to get the original trait value in row 3 of the fourth dataset in the list:
+
+```{r}
+list_of_dataframes[[3]]$OriginalTraitValue[5]
+```
+
+The same format also works on raw functions, although it is recommended that retrieved datasets are immediately stored in an `R` object:
+
+```{r}
+get_dataset(5)$SubmittedBy[1] # Name of person who submitted the dataset with ID 5
+```
+
+### Plotting datasets using `ggplot2`
+
+Once the database is retrieved, data can be used to explore and plot. In this example the dataset 49 will be used. This dataset have data about fecundity (number of eggs per individual) at different temperatures for the species **Sepedon fuscipennis**:
+
+```{r}
+dataset49 <- get_dataset(49)
+```
+
+By using tools from `ggplot2` data can be transformed and used:
+
+```{r}
+dataset49 %>%
+  ggplot(aes(Interactor1Temp,OriginalTraitValue)) +
+  geom_point(col = "blue") +
+  geom_errorbar(aes(ymax = OriginalTraitValue+OriginalErrorPos, 
+                    ymin = OriginalTraitValue-OriginalErrorNeg), width = 1) +
+  theme_bw()
+```
+
+The same can be done when multiple datasets are retrieved. For this example we will use two datasets about fecundity (number of eggs per individual) at different temperatures.
+
+```{r}
+longevity_temp <- get_datasets(c(71,111))
+longevity_temp <- do.call(rbind,lapply(longevity_temp, data.frame, stringsAsFactors=FALSE))
+```
+
+Now we can display both datasets on the same plot:
+
+```{r}
+longevity_temp %>%
+  mutate(DatasetID = factor(DatasetID)) %>%
+  ggplot(aes(Interactor1Temp, OriginalTraitValue, col = DatasetID)) +
+  geom_point() +
+  geom_errorbar(aes(ymax = OriginalTraitValue+OriginalErrorPos, 
+                    ymin = OriginalTraitValue-OriginalErrorNeg), width = 2) +
+  theme_bw()
+```
+
+<br>
