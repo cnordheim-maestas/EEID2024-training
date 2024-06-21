@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>EEID2024 - Intro to course tools: VectorByte Dataset Access Functions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">EEID2024</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./schedule.html"> 
+<span class="menu-text">Schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./materials.html"> 
+<span class="menu-text">Materials</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#installing-bayestpc-package" id="toc-installing-bayestpc-package" class="nav-link active" data-scroll-target="#installing-bayestpc-package">Installing <code>bayesTPC</code> package</a></li>
+  <li><a href="#getting-to-know-the-vectraits-database" id="toc-getting-to-know-the-vectraits-database" class="nav-link" data-scroll-target="#getting-to-know-the-vectraits-database">Getting to know the VecTraits database</a></li>
+  <li><a href="#pulling-data-into-r-using-the-vectraits-api-application-programming-interface-from-bayestpc" id="toc-pulling-data-into-r-using-the-vectraits-api-application-programming-interface-from-bayestpc" class="nav-link" data-scroll-target="#pulling-data-into-r-using-the-vectraits-api-application-programming-interface-from-bayestpc">Pulling data into <code>R</code> using the VecTraits API (Application Programming Interface) from <code>bayesTPC</code></a></li>
+  <li><a href="#retrieve-multiple-datasets" id="toc-retrieve-multiple-datasets" class="nav-link" data-scroll-target="#retrieve-multiple-datasets">Retrieve Multiple Datasets</a></li>
+  <li><a href="#search-for-and-list-datasets-on-a-specific-genus" id="toc-search-for-and-list-datasets-on-a-specific-genus" class="nav-link" data-scroll-target="#search-for-and-list-datasets-on-a-specific-genus">Search for and list datasets on a specific genus</a>
+  <ul class="collapse">
+  <li><a href="#other-options" id="toc-other-options" class="nav-link" data-scroll-target="#other-options">Other options</a></li>
+  <li><a href="#retrieve-list-of-datasets-related-to-keyword" id="toc-retrieve-list-of-datasets-related-to-keyword" class="nav-link" data-scroll-target="#retrieve-list-of-datasets-related-to-keyword">Retrieve List of Datasets Related To Keyword</a></li>
+  <li><a href="#the-pick-function" id="toc-the-pick-function" class="nav-link" data-scroll-target="#the-pick-function">The <code>pick()</code> Function</a></li>
+  <li><a href="#access-dataframes-in-lists" id="toc-access-dataframes-in-lists" class="nav-link" data-scroll-target="#access-dataframes-in-lists">Access Dataframes In Lists</a></li>
+  <li><a href="#access-data-in-dataframes" id="toc-access-data-in-dataframes" class="nav-link" data-scroll-target="#access-data-in-dataframes">Access Data In Dataframes</a></li>
+  <li><a href="#plotting-datasets-using-ggplot2" id="toc-plotting-datasets-using-ggplot2" class="nav-link" data-scroll-target="#plotting-datasets-using-ggplot2">Plotting datasets using <code>ggplot2</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Intro to course tools: VectorByte Dataset Access Functions</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This section will cover the exploration of of the <a href="https://vectorbyte.crc.nd.edu/vectraits-explorer">VecTraits</a> database and the functions included in the package <code>bayesTPC</code> to access to specific data.</p>
+<section id="installing-bayestpc-package" class="level2">
+<h2 class="anchored" data-anchor-id="installing-bayestpc-package">Installing <code>bayesTPC</code> package</h2>
+<p>Lets start installing the package <code>bayesTPC</code>. It is important to have some packages installed in advance. The package <code>bayesTPC</code> uses some functionality from the package <code>nimble</code>. It is also useful to install the package <code>remotes</code> to install <code>bayesTPC</code> from the repository. To do so, you can run the following codes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run any of the following if you don't have them installed yet</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"nimble"</span>) </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To install the package <code>bayesTPC</code>, you can use the following line of code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"johnwilliamsmithjr/bayesTPC"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="getting-to-know-the-vectraits-database" class="level2">
+<h2 class="anchored" data-anchor-id="getting-to-know-the-vectraits-database">Getting to know the VecTraits database</h2>
+<p>Explore the <a href="https://vectorbyte.crc.nd.edu/vectraits-explorer">VecTraits</a> database. Notice that you can search datasets by filtering according to traits, variables, genus, etc. We encourage you to identify some datasets that meets your particular interests.</p>
+</section>
+<section id="pulling-data-into-r-using-the-vectraits-api-application-programming-interface-from-bayestpc" class="level2">
+<h2 class="anchored" data-anchor-id="pulling-data-into-r-using-the-vectraits-api-application-programming-interface-from-bayestpc">Pulling data into <code>R</code> using the VecTraits API (Application Programming Interface) from <code>bayesTPC</code></h2>
+<p>This section will walk you through the functions included in <code>bayesTPC</code> to retrieve data from <a href="https://vectorbyte.crc.nd.edu/vectraits-explorer">VecTraits</a> database</p>
+<p>Load some packages…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nimble)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesTPC)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we are going to use some functions to extract specific datasets. We can use the function <code>get_dataset()</code> to extract a single one:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dataset50 <span class="ot">&lt;-</span> <span class="fu">get_dataset</span>(<span class="dv">50</span>) <span class="co"># Get dataset with ID 50</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dataset50)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Id DatasetID IndividualID OriginalID OriginalTraitName
+1 81848        50                  PHX261    fecundity rate
+2 81849        50                  PHX261    fecundity rate
+3 81850        50                  PHX261    fecundity rate
+4 81851        50                  PHX261    fecundity rate
+5 81852        50                  PHX261    fecundity rate
+              OriginalTraitDef StandardisedTraitName StandardisedTraitDef
+1 mean eggs individual-1 day-1                    NA                   NA
+2 mean eggs individual-1 day-1                    NA                   NA
+3 mean eggs individual-1 day-1                    NA                   NA
+4 mean eggs individual-1 day-1                    NA                   NA
+5 mean eggs individual-1 day-1                    NA                   NA
+  OriginalTraitValue       OriginalTraitUnit OriginalErrorPos OriginalErrorNeg
+1                3.0 eggs individual-1 day-1             51.7             51.7
+2                6.3 eggs individual-1 day-1             33.4             33.4
+3                9.6 eggs individual-1 day-1             36.3             36.3
+4               12.5 eggs individual-1 day-1             45.7             45.7
+5                5.8 eggs individual-1 day-1             75.2             75.2
+        OriginalErrorUnit StandardisedTraitValue StandardisedTraitUnit
+1 coefficient of variance                     NA                    NA
+2 coefficient of variance                     NA                    NA
+3 coefficient of variance                     NA                    NA
+4 coefficient of variance                     NA                    NA
+5 coefficient of variance                     NA                    NA
+  StandardisedErrorPos StandardisedErrorNeg StandardisedErrorUnit Replicates
+1                   NA                   NA                    NA         NA
+2                   NA                   NA                    NA         NA
+3                   NA                   NA                    NA         NA
+4                   NA                   NA                    NA         NA
+5                   NA                   NA                    NA         NA
+      Habitat   LabField ArenaValue ArenaUnit ArenaValueSI ArenaUnitSI
+1 terrestrial laboratory         NA        NA           NA          NA
+2 terrestrial laboratory         NA        NA           NA          NA
+3 terrestrial laboratory         NA        NA           NA          NA
+4 terrestrial laboratory         NA        NA           NA          NA
+5 terrestrial laboratory         NA        NA           NA          NA
+  AmbientTemp AmbientTempMethod AmbientTempUnit AmbientLight AmbientLightUnit
+1          NA                NA              NA           NA               NA
+2          NA                NA              NA           NA               NA
+3          NA                NA              NA           NA               NA
+4          NA                NA              NA           NA               NA
+5          NA                NA              NA           NA               NA
+  SecondStressor SecondStressorDef SecondStressorValue SecondStressorUnit
+1             NA                NA                  NA                 NA
+2             NA                NA                  NA                 NA
+3             NA                NA                  NA                 NA
+4             NA                NA                  NA                 NA
+5             NA                NA                  NA                 NA
+  TimeStart TimeEnd TotalObsTimeValue TotalObsTimeUnit TotalObsTimeValueSI
+1        NA      NA                NA               NA                  NA
+2        NA      NA                NA               NA                  NA
+3        NA      NA                NA               NA                  NA
+4        NA      NA                NA               NA                  NA
+5        NA      NA                NA               NA                  NA
+  TotalObsTimeUnitSI TotalObsTimeNotes ResRepValue ResRepUnit ResRepValueSI
+1                 NA                NA          NA         NA            NA
+2                 NA                NA          NA         NA            NA
+3                 NA                NA          NA         NA            NA
+4                 NA                NA          NA         NA            NA
+5                 NA                NA          NA         NA            NA
+  ResRepUnitSI    LocationText LocationType OriginalLocationDate LocationDate
+1           NA Dryden New York           NA                   NA   1974-01-06
+2           NA Dryden New York           NA                   NA   1974-01-06
+3           NA Dryden New York           NA                   NA   1974-01-06
+4           NA Dryden New York           NA                   NA   1974-01-06
+5           NA Dryden New York           NA                   NA   1974-01-06
+  LocationDatePrecision CoordinateType Latitude Longitude         Interactor1
+1                     3        decimal 42.48917 -76.35972 Sepedon fuscipennis
+2                     3        decimal 42.48917 -76.35972 Sepedon fuscipennis
+3                     3        decimal 42.48917 -76.35972 Sepedon fuscipennis
+4                     3        decimal 42.48917 -76.35972 Sepedon fuscipennis
+5                     3        decimal 42.48917 -76.35972 Sepedon fuscipennis
+  Interactor1Common Interactor1Wholepart Interactor1WholePartType
+1         Marsh fly                   NA                       NA
+2         Marsh fly                   NA                       NA
+3         Marsh fly                   NA                       NA
+4         Marsh fly                   NA                       NA
+5         Marsh fly                   NA                       NA
+  Interactor1Number Interactor1Kingdom Interactor1Phylum Interactor1Class
+1                17           Animalia        Arthropoda          Insecta
+2                59           Animalia        Arthropoda          Insecta
+3                54           Animalia        Arthropoda          Insecta
+4                52           Animalia        Arthropoda          Insecta
+5                24           Animalia        Arthropoda          Insecta
+  Interactor1Order Interactor1Family Interactor1Genus Interactor1Species
+1          Diptera       Sciomyzidae          Sepedon        fuscipennis
+2          Diptera       Sciomyzidae          Sepedon        fuscipennis
+3          Diptera       Sciomyzidae          Sepedon        fuscipennis
+4          Diptera       Sciomyzidae          Sepedon        fuscipennis
+5          Diptera       Sciomyzidae          Sepedon        fuscipennis
+  Interactor1Stage Interactor1Sex Interactor1Temp Interactor1TempUnit
+1            adult         female              15             Celsius
+2            adult         female              21             Celsius
+3            adult         female              26             Celsius
+4            adult         female              30             Celsius
+5            adult         female              33             Celsius
+  Interactor1TempMethod Interactor1GrowthTemp Interactor1GrowthTempUnit
+1                    NA                    NA                        NA
+2                    NA                    NA                        NA
+3                    NA                    NA                        NA
+4                    NA                    NA                        NA
+5                    NA                    NA                        NA
+  Interactor1GrowthDur Interactor1GrowthdDurUnit Interactor1GrowthType
+1                   NA                        NA                    NA
+2                   NA                        NA                    NA
+3                   NA                        NA                    NA
+4                   NA                        NA                    NA
+5                   NA                        NA                    NA
+  Interactor1Acc Interactor1AccTemp Interactor1AccTempNotes Interactor1AccTime
+1             NA                 NA                      NA                 NA
+2             NA                 NA                      NA                 NA
+3             NA                 NA                      NA                 NA
+4             NA                 NA                      NA                 NA
+5             NA                 NA                      NA                 NA
+  Interactor1AccTimeNotes Interactor1AccTimeUnit Interactor1OrigTemp
+1                      NA                     NA                  NA
+2                      NA                     NA                  NA
+3                      NA                     NA                  NA
+4                      NA                     NA                  NA
+5                      NA                     NA                  NA
+  Interactor1OrigTempNotes Interactor1OrigTime Interactor1OrigTimeNotes
+1                       NA                  NA                       NA
+2                       NA                  NA                       NA
+3                       NA                  NA                       NA
+4                       NA                  NA                       NA
+5                       NA                  NA                       NA
+  Interactor1OrigTimeUnit Interactor1EquilibTimeValue
+1                      NA                          NA
+2                      NA                          NA
+3                      NA                          NA
+4                      NA                          NA
+5                      NA                          NA
+  Interactor1EquilibTimeUnit Interactor1Size Interactor1SizeUnit
+1                         NA              NA                  NA
+2                         NA              NA                  NA
+3                         NA              NA                  NA
+4                         NA              NA                  NA
+5                         NA              NA                  NA
+  Interactor1SizeType Interactor1SizeSI Interactor1SizeUnitSI
+1                  NA                NA                    NA
+2                  NA                NA                    NA
+3                  NA                NA                    NA
+4                  NA                NA                    NA
+5                  NA                NA                    NA
+  Interactor1DenValue Interactor1DenUnit Interactor1DenTypeSI
+1                  NA                 NA                   NA
+2                  NA                 NA                   NA
+3                  NA                 NA                   NA
+4                  NA                 NA                   NA
+5                  NA                 NA                   NA
+  Interactor1DenValueSI Interactor1DenUnitSI Interactor1MassValueSI
+1                    NA                   NA                     NA
+2                    NA                   NA                     NA
+3                    NA                   NA                     NA
+4                    NA                   NA                     NA
+5                    NA                   NA                     NA
+  Interactor1MassUnitSI Interactor2 Interactor2Common Interactor2Kingdom
+1                    NA   None None                NA                 NA
+2                    NA   None None                NA                 NA
+3                    NA   None None                NA                 NA
+4                    NA   None None                NA                 NA
+5                    NA   None None                NA                 NA
+  Interactor2Phylum Interactor2Class Interactor2Order Interactor2Family
+1                NA               NA               NA                NA
+2                NA               NA               NA                NA
+3                NA               NA               NA                NA
+4                NA               NA               NA                NA
+5                NA               NA               NA                NA
+  Interactor2Genus Interactor2Species Interactor2Stage Interactor2Sex
+1               NA                 NA               NA             NA
+2               NA                 NA               NA             NA
+3               NA                 NA               NA             NA
+4               NA                 NA               NA             NA
+5               NA                 NA               NA             NA
+  Interactor2Temp Interactor2TempUnit Interactor2TempMethod
+1              NA                  NA                    NA
+2              NA                  NA                    NA
+3              NA                  NA                    NA
+4              NA                  NA                    NA
+5              NA                  NA                    NA
+  Interactor2GrowthTemp Interactor2GrowthTempUnit Interactor2GrowthDur
+1                    NA                        NA                   NA
+2                    NA                        NA                   NA
+3                    NA                        NA                   NA
+4                    NA                        NA                   NA
+5                    NA                        NA                   NA
+  Interactor2GrowthDurUnit Interactor2GrowthType Interactor2Acc
+1                       NA                    NA             NA
+2                       NA                    NA             NA
+3                       NA                    NA             NA
+4                       NA                    NA             NA
+5                       NA                    NA             NA
+  Interactor2AccTemp Interactor2AccTempNotes Interactor2AccTime
+1                 NA                      NA                 NA
+2                 NA                      NA                 NA
+3                 NA                      NA                 NA
+4                 NA                      NA                 NA
+5                 NA                      NA                 NA
+  Interactor2AccTimeNotes Interactor2AccTimeUnit Interactor2OrigTemp
+1                      NA                     NA                  NA
+2                      NA                     NA                  NA
+3                      NA                     NA                  NA
+4                      NA                     NA                  NA
+5                      NA                     NA                  NA
+  Interactor2OrigTempNotes Interactor2OrigTime Interactor2OrigTimeNotes
+1                       NA                  NA                       NA
+2                       NA                  NA                       NA
+3                       NA                  NA                       NA
+4                       NA                  NA                       NA
+5                       NA                  NA                       NA
+  Interactor2OrigTimeUnit Interactor2EquilibTimeValue
+1                      NA                          NA
+2                      NA                          NA
+3                      NA                          NA
+4                      NA                          NA
+5                      NA                          NA
+  Interactor2EquilibTimeUnit Interactor2Size Interactor2SizeUnit
+1                         NA              NA                  NA
+2                         NA              NA                  NA
+3                         NA              NA                  NA
+4                         NA              NA                  NA
+5                         NA              NA                  NA
+  Interactor2SizeType Interactor2SizeSI Interactor2SizeUnitSI
+1                  NA                NA                    NA
+2                  NA                NA                    NA
+3                  NA                NA                    NA
+4                  NA                NA                    NA
+5                  NA                NA                    NA
+  Interactor2DenValue Interactor2DenUnit Interactor2DenTypeSI
+1                  NA                 NA                   NA
+2                  NA                 NA                   NA
+3                  NA                 NA                   NA
+4                  NA                 NA                   NA
+5                  NA                 NA                   NA
+  Interactor2DenValueSI Interactor2DenUnitSI Interactor2MassValueSI
+1                    NA                   NA                     NA
+2                    NA                   NA                     NA
+3                    NA                   NA                     NA
+4                    NA                   NA                     NA
+5                    NA                   NA                     NA
+  Interactor2MassUnitSI PhysicalProcess PhysicalProcess_1 PhysicalProcess_2
+1                    NA              NA                NA                NA
+2                    NA              NA                NA                NA
+3                    NA              NA                NA                NA
+4                    NA              NA                NA                NA
+5                    NA              NA                NA                NA
+  FigureTable
+1     table 1
+2     table 1
+3     table 1
+4     table 1
+5     table 1
+                                                                                                                                                                                     Citation
+1 Barnes 1976. Effect of temperature on development survival oviposition and diapause in laboratory populations of Sepedon fuscipennis (Diptera: Sciomyzidae). Environ. Entomol. 5: 1089-1098
+2 Barnes 1976. Effect of temperature on development survival oviposition and diapause in laboratory populations of Sepedon fuscipennis (Diptera: Sciomyzidae). Environ. Entomol. 5: 1089-1098
+3 Barnes 1976. Effect of temperature on development survival oviposition and diapause in laboratory populations of Sepedon fuscipennis (Diptera: Sciomyzidae). Environ. Entomol. 5: 1089-1098
+4 Barnes 1976. Effect of temperature on development survival oviposition and diapause in laboratory populations of Sepedon fuscipennis (Diptera: Sciomyzidae). Environ. Entomol. 5: 1089-1098
+5 Barnes 1976. Effect of temperature on development survival oviposition and diapause in laboratory populations of Sepedon fuscipennis (Diptera: Sciomyzidae). Environ. Entomol. 5: 1089-1098
+  CuratedByCitation CuratedByDOI                 DOI SubmittedBy
+1                NA           NA 10.1093/ee/5.6.1089 Paul Huxley
+2                NA           NA 10.1093/ee/5.6.1089 Paul Huxley
+3                NA           NA 10.1093/ee/5.6.1089 Paul Huxley
+4                NA           NA 10.1093/ee/5.6.1089 Paul Huxley
+5                NA           NA 10.1093/ee/5.6.1089 Paul Huxley
+  ContributorEmail Notes DefaultChartXaxis DefaultChartCategory
+1 phuxly@gmail.com    NA   Interactor1Temp         LocationText
+2 phuxly@gmail.com    NA   Interactor1Temp         LocationText
+3 phuxly@gmail.com    NA   Interactor1Temp         LocationText
+4 phuxly@gmail.com    NA   Interactor1Temp         LocationText
+5 phuxly@gmail.com    NA   Interactor1Temp         LocationText</code></pre>
+</div>
+</div>
+</section>
+<section id="retrieve-multiple-datasets" class="level2">
+<h2 class="anchored" data-anchor-id="retrieve-multiple-datasets">Retrieve Multiple Datasets</h2>
+<p>Get a list of datasets by their ID numbers.</p>
+<p>format: <code>get_datasets(&lt;Vector or sequence of IDs&gt;)</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">get_datasets</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 1 
+Retrieving dataset: 2 
+Retrieving dataset: 3 
+Retrieving dataset: 4 
+Retrieving dataset: 5 
+Retrieving dataset: 6 
+Retrieving dataset: 7 
+Retrieving dataset: 8 
+Retrieving dataset: 9 
+Retrieving dataset: 10 </code></pre>
+</div>
+</div>
+<p>Use <code>do.call</code> and <code>lapply</code> to create a single dataframe containing all of the datasets you pulled in the previous step:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>datasets1to10 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind,<span class="fu">lapply</span>(list_of_dataframes, data.frame, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datasets1to10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Id DatasetID IndividualID OriginalID OriginalTraitName
+1 81518         1                  PHX801  development time
+2 81519         1                  PHX801  development time
+3 81520         1                  PHX801  development time
+4 81521         1                  PHX801  development time
+5 81522         1                  PHX801  development time
+6 81523         2                  PHX802         fecundity
+             OriginalTraitDef StandardisedTraitName StandardisedTraitDef
+1 mean duration of life stage                    NA                   NA
+2 mean duration of life stage                    NA                   NA
+3 mean duration of life stage                    NA                   NA
+4 mean duration of life stage                    NA                   NA
+5 mean duration of life stage                    NA                   NA
+6     mean lifetime offspring                    NA                   NA
+  OriginalTraitValue      OriginalTraitUnit OriginalErrorPos OriginalErrorNeg
+1               21.3                   days             0.31             0.31
+2               12.2                   days             0.23             0.23
+3                8.3                   days             0.16             0.16
+4                6.7                   days             0.16             0.16
+5                6.5                   days             0.26             0.26
+6               51.5 offspring individual-1             3.93             3.93
+  OriginalErrorUnit StandardisedTraitValue StandardisedTraitUnit
+1                se                     NA                    NA
+2                se                     NA                    NA
+3                se                     NA                    NA
+4                se                     NA                    NA
+5                se                     NA                    NA
+6                se                     NA                    NA
+  StandardisedErrorPos StandardisedErrorNeg StandardisedErrorUnit Replicates
+1                   NA                   NA                    NA         NA
+2                   NA                   NA                    NA         NA
+3                   NA                   NA                    NA         NA
+4                   NA                   NA                    NA         NA
+5                   NA                   NA                    NA         NA
+6                   NA                   NA                    NA         NA
+      Habitat   LabField ArenaValue ArenaUnit ArenaValueSI ArenaUnitSI
+1 terrestrial laboratory         NA        NA           NA          NA
+2 terrestrial laboratory         NA        NA           NA          NA
+3 terrestrial laboratory         NA        NA           NA          NA
+4 terrestrial laboratory         NA        NA           NA          NA
+5 terrestrial laboratory         NA        NA           NA          NA
+6 terrestrial laboratory         NA        NA           NA          NA
+  AmbientTemp AmbientTempMethod AmbientTempUnit AmbientLight AmbientLightUnit
+1          NA                NA              NA           NA               NA
+2          NA                NA              NA           NA               NA
+3          NA                NA              NA           NA               NA
+4          NA                NA              NA           NA               NA
+5          NA                NA              NA           NA               NA
+6          NA                NA              NA           NA               NA
+  SecondStressor SecondStressorDef SecondStressorValue SecondStressorUnit
+1             NA                NA                  NA                 NA
+2             NA                NA                  NA                 NA
+3             NA                NA                  NA                 NA
+4             NA                NA                  NA                 NA
+5             NA                NA                  NA                 NA
+6             NA                NA                  NA                 NA
+  TimeStart TimeEnd TotalObsTimeValue TotalObsTimeUnit TotalObsTimeValueSI
+1        NA      NA                NA               NA                  NA
+2        NA      NA                NA               NA                  NA
+3        NA      NA                NA               NA                  NA
+4        NA      NA                NA               NA                  NA
+5        NA      NA                NA               NA                  NA
+6        NA      NA                NA               NA                  NA
+  TotalObsTimeUnitSI TotalObsTimeNotes ResRepValue ResRepUnit ResRepValueSI
+1                 NA                NA          NA         NA            NA
+2                 NA                NA          NA         NA            NA
+3                 NA                NA          NA         NA            NA
+4                 NA                NA          NA         NA            NA
+5                 NA                NA          NA         NA            NA
+6                 NA                NA          NA         NA            NA
+  ResRepUnitSI                LocationText LocationType OriginalLocationDate
+1           NA Nonsan-si Republic of Korea        field                   NA
+2           NA Nonsan-si Republic of Korea        field                   NA
+3           NA Nonsan-si Republic of Korea        field                   NA
+4           NA Nonsan-si Republic of Korea        field                   NA
+5           NA Nonsan-si Republic of Korea        field                   NA
+6           NA Nonsan-si Republic of Korea        field                   NA
+  LocationDate LocationDatePrecision CoordinateType Latitude Longitude
+1   2009-01-01                     1        decimal     36.5    126.75
+2   2009-01-01                     1        decimal     36.5    126.75
+3   2009-01-01                     1        decimal     36.5    126.75
+4   2009-01-01                     1        decimal     36.5    126.75
+5   2009-01-01                     1        decimal     36.5    126.75
+6   2009-01-01                     1        decimal     36.5    126.75
+          Interactor1 Interactor1Common Interactor1Wholepart
+1 Acyrthosiphon pisum         Pea aphid                   NA
+2 Acyrthosiphon pisum         Pea aphid                   NA
+3 Acyrthosiphon pisum         Pea aphid                   NA
+4 Acyrthosiphon pisum         Pea aphid                   NA
+5 Acyrthosiphon pisum         Pea aphid                   NA
+6 Acyrthosiphon pisum         Pea aphid                   NA
+  Interactor1WholePartType Interactor1Number Interactor1Kingdom
+1                       NA                39           Animalia
+2                       NA                53           Animalia
+3                       NA                45           Animalia
+4                       NA                42           Animalia
+5                       NA                 8           Animalia
+6                       NA                50           Animalia
+  Interactor1Phylum Interactor1Class Interactor1Order Interactor1Family
+1        Arthropoda          Insecta        Hemiptera         Aphididae
+2        Arthropoda          Insecta        Hemiptera         Aphididae
+3        Arthropoda          Insecta        Hemiptera         Aphididae
+4        Arthropoda          Insecta        Hemiptera         Aphididae
+5        Arthropoda          Insecta        Hemiptera         Aphididae
+6        Arthropoda          Insecta        Hemiptera         Aphididae
+  Interactor1Genus Interactor1Species Interactor1Stage Interactor1Sex
+1    Acyrthosiphon              pisum         juvenile           &lt;NA&gt;
+2    Acyrthosiphon              pisum         juvenile           &lt;NA&gt;
+3    Acyrthosiphon              pisum         juvenile           &lt;NA&gt;
+4    Acyrthosiphon              pisum         juvenile           &lt;NA&gt;
+5    Acyrthosiphon              pisum         juvenile           &lt;NA&gt;
+6    Acyrthosiphon              pisum            adult         female
+  Interactor1Temp Interactor1TempUnit Interactor1TempMethod
+1              10             Celsius                    NA
+2              15             Celsius                    NA
+3              20             Celsius                    NA
+4              25             Celsius                    NA
+5              30             Celsius                    NA
+6              10             Celsius                    NA
+  Interactor1GrowthTemp Interactor1GrowthTempUnit Interactor1GrowthDur
+1                    NA                      &lt;NA&gt;                   NA
+2                    NA                      &lt;NA&gt;                   NA
+3                    NA                      &lt;NA&gt;                   NA
+4                    NA                      &lt;NA&gt;                   NA
+5                    NA                      &lt;NA&gt;                   NA
+6                    NA                      &lt;NA&gt;                   NA
+  Interactor1GrowthdDurUnit Interactor1GrowthType Interactor1Acc
+1                        NA                    NA             NA
+2                        NA                    NA             NA
+3                        NA                    NA             NA
+4                        NA                    NA             NA
+5                        NA                    NA             NA
+6                        NA                    NA             NA
+  Interactor1AccTemp Interactor1AccTempNotes Interactor1AccTime
+1                 NA                      NA                 NA
+2                 NA                      NA                 NA
+3                 NA                      NA                 NA
+4                 NA                      NA                 NA
+5                 NA                      NA                 NA
+6                 NA                      NA                 NA
+  Interactor1AccTimeNotes Interactor1AccTimeUnit Interactor1OrigTemp
+1                      NA                     NA                  NA
+2                      NA                     NA                  NA
+3                      NA                     NA                  NA
+4                      NA                     NA                  NA
+5                      NA                     NA                  NA
+6                      NA                     NA                  NA
+  Interactor1OrigTempNotes Interactor1OrigTime Interactor1OrigTimeNotes
+1                       NA                  NA                       NA
+2                       NA                  NA                       NA
+3                       NA                  NA                       NA
+4                       NA                  NA                       NA
+5                       NA                  NA                       NA
+6                       NA                  NA                       NA
+  Interactor1OrigTimeUnit Interactor1EquilibTimeValue
+1                      NA                          NA
+2                      NA                          NA
+3                      NA                          NA
+4                      NA                          NA
+5                      NA                          NA
+6                      NA                          NA
+  Interactor1EquilibTimeUnit Interactor1Size Interactor1SizeUnit
+1                         NA              NA                  NA
+2                         NA              NA                  NA
+3                         NA              NA                  NA
+4                         NA              NA                  NA
+5                         NA              NA                  NA
+6                         NA              NA                  NA
+  Interactor1SizeType Interactor1SizeSI Interactor1SizeUnitSI
+1                  NA                NA                    NA
+2                  NA                NA                    NA
+3                  NA                NA                    NA
+4                  NA                NA                    NA
+5                  NA                NA                    NA
+6                  NA                NA                    NA
+  Interactor1DenValue Interactor1DenUnit Interactor1DenTypeSI
+1                  NA                 NA                   NA
+2                  NA                 NA                   NA
+3                  NA                 NA                   NA
+4                  NA                 NA                   NA
+5                  NA                 NA                   NA
+6                  NA                 NA                   NA
+  Interactor1DenValueSI Interactor1DenUnitSI Interactor1MassValueSI
+1                    NA                   NA                     NA
+2                    NA                   NA                     NA
+3                    NA                   NA                     NA
+4                    NA                   NA                     NA
+5                    NA                   NA                     NA
+6                    NA                   NA                     NA
+  Interactor1MassUnitSI Interactor2 Interactor2Common Interactor2Kingdom
+1                    NA   None None                NA                 NA
+2                    NA   None None                NA                 NA
+3                    NA   None None                NA                 NA
+4                    NA   None None                NA                 NA
+5                    NA   None None                NA                 NA
+6                    NA   None None                NA                 NA
+  Interactor2Phylum Interactor2Class Interactor2Order Interactor2Family
+1                NA               NA               NA                NA
+2                NA               NA               NA                NA
+3                NA               NA               NA                NA
+4                NA               NA               NA                NA
+5                NA               NA               NA                NA
+6                NA               NA               NA                NA
+  Interactor2Genus Interactor2Species Interactor2Stage Interactor2Sex
+1               NA                 NA               NA             NA
+2               NA                 NA               NA             NA
+3               NA                 NA               NA             NA
+4               NA                 NA               NA             NA
+5               NA                 NA               NA             NA
+6               NA                 NA               NA             NA
+  Interactor2Temp Interactor2TempUnit Interactor2TempMethod
+1              NA                  NA                    NA
+2              NA                  NA                    NA
+3              NA                  NA                    NA
+4              NA                  NA                    NA
+5              NA                  NA                    NA
+6              NA                  NA                    NA
+  Interactor2GrowthTemp Interactor2GrowthTempUnit Interactor2GrowthDur
+1                    NA                        NA                   NA
+2                    NA                        NA                   NA
+3                    NA                        NA                   NA
+4                    NA                        NA                   NA
+5                    NA                        NA                   NA
+6                    NA                        NA                   NA
+  Interactor2GrowthDurUnit Interactor2GrowthType Interactor2Acc
+1                       NA                    NA             NA
+2                       NA                    NA             NA
+3                       NA                    NA             NA
+4                       NA                    NA             NA
+5                       NA                    NA             NA
+6                       NA                    NA             NA
+  Interactor2AccTemp Interactor2AccTempNotes Interactor2AccTime
+1                 NA                      NA                 NA
+2                 NA                      NA                 NA
+3                 NA                      NA                 NA
+4                 NA                      NA                 NA
+5                 NA                      NA                 NA
+6                 NA                      NA                 NA
+  Interactor2AccTimeNotes Interactor2AccTimeUnit Interactor2OrigTemp
+1                      NA                     NA                  NA
+2                      NA                     NA                  NA
+3                      NA                     NA                  NA
+4                      NA                     NA                  NA
+5                      NA                     NA                  NA
+6                      NA                     NA                  NA
+  Interactor2OrigTempNotes Interactor2OrigTime Interactor2OrigTimeNotes
+1                       NA                  NA                       NA
+2                       NA                  NA                       NA
+3                       NA                  NA                       NA
+4                       NA                  NA                       NA
+5                       NA                  NA                       NA
+6                       NA                  NA                       NA
+  Interactor2OrigTimeUnit Interactor2EquilibTimeValue
+1                      NA                          NA
+2                      NA                          NA
+3                      NA                          NA
+4                      NA                          NA
+5                      NA                          NA
+6                      NA                          NA
+  Interactor2EquilibTimeUnit Interactor2Size Interactor2SizeUnit
+1                         NA              NA                  NA
+2                         NA              NA                  NA
+3                         NA              NA                  NA
+4                         NA              NA                  NA
+5                         NA              NA                  NA
+6                         NA              NA                  NA
+  Interactor2SizeType Interactor2SizeSI Interactor2SizeUnitSI
+1                  NA                NA                    NA
+2                  NA                NA                    NA
+3                  NA                NA                    NA
+4                  NA                NA                    NA
+5                  NA                NA                    NA
+6                  NA                NA                    NA
+  Interactor2DenValue Interactor2DenUnit Interactor2DenTypeSI
+1                  NA                 NA                   NA
+2                  NA                 NA                   NA
+3                  NA                 NA                   NA
+4                  NA                 NA                   NA
+5                  NA                 NA                   NA
+6                  NA                 NA                   NA
+  Interactor2DenValueSI Interactor2DenUnitSI Interactor2MassValueSI
+1                    NA                   NA                     NA
+2                    NA                   NA                     NA
+3                    NA                   NA                     NA
+4                    NA                   NA                     NA
+5                    NA                   NA                     NA
+6                    NA                   NA                     NA
+  Interactor2MassUnitSI PhysicalProcess PhysicalProcess_1 PhysicalProcess_2
+1                    NA              NA                NA                NA
+2                    NA              NA                NA                NA
+3                    NA              NA                NA                NA
+4                    NA              NA                NA                NA
+5                    NA              NA                NA                NA
+6                    NA              NA                NA                NA
+  FigureTable
+1     table 1
+2     table 1
+3     table 1
+4     table 1
+5     table 1
+6     table 1
+                                                                                                                                       Citation
+1 Ahn et al. 2020. Thermal effects on the population parameters and growth of Acyrthosiphon pisum (Harris) (Hemiptera: Aphididae). Insects 11:8
+2 Ahn et al. 2020. Thermal effects on the population parameters and growth of Acyrthosiphon pisum (Harris) (Hemiptera: Aphididae). Insects 11:8
+3 Ahn et al. 2020. Thermal effects on the population parameters and growth of Acyrthosiphon pisum (Harris) (Hemiptera: Aphididae). Insects 11:8
+4 Ahn et al. 2020. Thermal effects on the population parameters and growth of Acyrthosiphon pisum (Harris) (Hemiptera: Aphididae). Insects 11:8
+5 Ahn et al. 2020. Thermal effects on the population parameters and growth of Acyrthosiphon pisum (Harris) (Hemiptera: Aphididae). Insects 11:8
+6 Ahn et al. 2020. Thermal effects on the population parameters and growth of Acyrthosiphon pisum (Harris) (Hemiptera: Aphididae). Insects 11:8
+  CuratedByCitation CuratedByDOI                     DOI SubmittedBy
+1                NA           NA 10.3390/insects11080481 Paul Huxley
+2                NA           NA 10.3390/insects11080481 Paul Huxley
+3                NA           NA 10.3390/insects11080481 Paul Huxley
+4                NA           NA 10.3390/insects11080481 Paul Huxley
+5                NA           NA 10.3390/insects11080481 Paul Huxley
+6                NA           NA 10.3390/insects11080481 Paul Huxley
+  ContributorEmail                      Notes DefaultChartXaxis
+1 phuxly@gmail.com reared on faba bean leaves   Interactor1Temp
+2 phuxly@gmail.com reared on faba bean leaves   Interactor1Temp
+3 phuxly@gmail.com reared on faba bean leaves   Interactor1Temp
+4 phuxly@gmail.com reared on faba bean leaves   Interactor1Temp
+5 phuxly@gmail.com reared on faba bean leaves   Interactor1Temp
+6 phuxly@gmail.com reared on faba bean leaves   Interactor1Temp
+  DefaultChartCategory
+1         LocationText
+2         LocationText
+3         LocationText
+4         LocationText
+5         LocationText
+6         LocationText</code></pre>
+</div>
+</div>
+</section>
+<section id="search-for-and-list-datasets-on-a-specific-genus" class="level2">
+<h2 class="anchored" data-anchor-id="search-for-and-list-datasets-on-a-specific-genus">Search for and list datasets on a specific genus</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>list_of_sepedon <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="st">"Sepedon"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>6 datasets found. Attempting to retreive.
+
+Retrieving dataset: 49 
+Retrieving dataset: 50 
+Retrieving dataset: 51 
+Retrieving dataset: 52 
+Retrieving dataset: 53 
+Retrieving dataset: 54 </code></pre>
+</div>
+</div>
+<section id="other-options" class="level3">
+<h3 class="anchored" data-anchor-id="other-options">Other options</h3>
+<p>Format:</p>
+<p><code>list_of_dataframes &lt;- get_datasets(&lt;Vector or Range of IDs&gt;)</code></p>
+<p>Examples:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">get_datasets</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">35</span>)) <span class="co"># Get datasets 10, 20, and 35</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 10 
+Retrieving dataset: 20 
+Retrieving dataset: 35 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">get_datasets</span>(<span class="fu">seq</span>(<span class="dv">200</span>, <span class="dv">240</span>, <span class="dv">10</span>)) <span class="co"># Get datasets 200, 210, 220, 230, and 240</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 200 
+Retrieving dataset: 210 
+Retrieving dataset: 220 
+Retrieving dataset: 230 
+Retrieving dataset: 240 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">get_datasets</span>(<span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="dv">580</span>, <span class="dv">20</span>)) <span class="co"># Get datasets 1, 20, 50, and 580</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 50 
+Retrieving dataset: 1 
+Retrieving dataset: 580 
+Retrieving dataset: 20 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">get_datasets</span>(<span class="dv">320</span><span class="sc">:</span><span class="dv">324</span>) <span class="co"># Get datasets 320, 321, 322, 323, and 324</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 320 
+Retrieving dataset: 321 
+Retrieving dataset: 322 
+Retrieving dataset: 323 
+Retrieving dataset: 324 </code></pre>
+</div>
+</div>
+</section>
+<section id="retrieve-list-of-datasets-related-to-keyword" class="level3">
+<h3 class="anchored" data-anchor-id="retrieve-list-of-datasets-related-to-keyword">Retrieve List of Datasets Related To Keyword</h3>
+<p>Format: <code>list_of_dataframes &lt;- find_datasets(&lt;Keyword&gt;)</code></p>
+<p>Examples:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>list_of_tiger_dataframes <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="st">"tiger mosquito"</span>) <span class="co"># Get datasets related to tiger mosquitos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Probably you won’t be able to get a full list of datasets because the high number of datasets. If that is the case, you can use the argument <code>safety = FALSE</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>list_of_tiger_dataframes <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="st">"tiger mosquito"</span>, <span class="at">safety =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>17 datasets found. Attempting to retreive.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in get_datasets(set_search$ids, safety): Pulling a large number of datasets may take a while.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 6 
+Retrieving dataset: 69 
+Retrieving dataset: 70 
+Retrieving dataset: 71 
+Retrieving dataset: 72 
+Retrieving dataset: 108 
+Retrieving dataset: 109 
+Retrieving dataset: 110 
+Retrieving dataset: 111 
+Retrieving dataset: 112 
+Retrieving dataset: 171 
+Retrieving dataset: 288 
+Retrieving dataset: 289 
+Retrieving dataset: 290 
+Retrieving dataset: 291 
+Retrieving dataset: 292 
+Retrieving dataset: 293 </code></pre>
+</div>
+</div>
+<p>Another option would be refine the search by adding multiple keywords.</p>
+<p>Format: <code>list_of_dataframes &lt;- find_datasets(&lt;Vector of Keywords&gt;)</code></p>
+<p>Examples:</p>
+<p>(All the following retrieve datasets related to yellow fever &amp; terrestrial areas in North Carolina)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="fu">c</span>(<span class="st">"terrestrial"</span>, <span class="st">"north carolina"</span>, <span class="st">"yellow fever"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3 datasets found. Attempting to retreive.
+
+Retrieving dataset: 355 
+Retrieving dataset: 357 
+Retrieving dataset: 359 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="fu">c</span>(<span class="st">"terrestrial"</span>, <span class="st">"north carolina"</span>, <span class="st">"yellow fever"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3 datasets found. Attempting to retreive.
+
+Retrieving dataset: 355 
+Retrieving dataset: 357 
+Retrieving dataset: 359 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="fu">c</span>(<span class="st">"TERRESTRIAL"</span>, <span class="st">"NORTH CAROLINA"</span>, <span class="st">"YELLOW FEVER"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3 datasets found. Attempting to retreive.
+
+Retrieving dataset: 355 
+Retrieving dataset: 357 
+Retrieving dataset: 359 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes <span class="ot">&lt;-</span> <span class="fu">find_datasets</span>(<span class="fu">c</span>(<span class="st">"tERRestRiAL"</span>, <span class="st">"NoRTh CARoLina"</span>, <span class="st">"YELLow feVer"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>3 datasets found. Attempting to retreive.
+
+Retrieving dataset: 355 
+Retrieving dataset: 357 
+Retrieving dataset: 359 </code></pre>
+</div>
+</div>
+</section>
+<section id="the-pick-function" class="level3">
+<h3 class="anchored" data-anchor-id="the-pick-function">The <code>pick()</code> Function</h3>
+<p>If all the information above was too much and there’s no way you’re going to remember it, all you need to know is the <code>pick()</code> function. The <code>pick()</code> function displays a small menu and allows you to choose an option in order for you to find and retrieve whatever dataset(s) you may be looking for.</p>
+<p>Format:</p>
+<p><code>x &lt;- pick()</code></p>
+</section>
+<section id="access-dataframes-in-lists" class="level3">
+<h3 class="anchored" data-anchor-id="access-dataframes-in-lists">Access Dataframes In Lists</h3>
+<p>When multiple datasets are retrieved and stored in a list of dataframes, you can access individual datasets with the following format:</p>
+<p><code>first_dataframe &lt;- list_of_dataframes[[1]]</code></p>
+<p><code>second_dataframe &lt;- list_of_dataframes[[2]]</code></p>
+<p>…and so on for every dataframe in the list.</p>
+<p>Example:</p>
+<p>To print a list of the names of those who contributed to the datasets related to tiger mosquitos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_of_tiger_dataframes)) {</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(list_of_tiger_dataframes[[i]]<span class="sc">$</span>SubmittedBy[<span class="dv">1</span>])</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Lauren Chapman"
+[1] "Paul Huxley"
+[1] "Paul Huxley"
+[1] "Lauren Chapman"
+[1] "Lauren Chapman"
+[1] "Lauren Chapman"</code></pre>
+</div>
+</div>
+<p>or retrieve the IDs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(list_of_tiger_dataframes)) {</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(list_of_tiger_dataframes[[i]]<span class="sc">$</span>DatasetID[<span class="dv">1</span>])</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6
+[1] 69
+[1] 70
+[1] 71
+[1] 72
+[1] 108
+[1] 109
+[1] 110
+[1] 111
+[1] 112
+[1] 171
+[1] 288
+[1] 289
+[1] 290
+[1] 291
+[1] 292
+[1] 293</code></pre>
+</div>
+</div>
+</section>
+<section id="access-data-in-dataframes" class="level3">
+<h3 class="anchored" data-anchor-id="access-data-in-dataframes">Access Data In Dataframes</h3>
+<p>To access variable <code>x</code> in row <code>y</code> of a dataset stored as a dataframe, use the <code>$</code> symbol and square brackets <code>[]</code>:</p>
+<p><code>variable_value &lt;- dataframe$x[y]</code></p>
+<p>For example, if you had a dataset stored as a dataframe and you wanted to know the Genus of Interactor 1 in the fifth row, you could get that with the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dataset50<span class="sc">$</span>Interactor1Genus[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sepedon"</code></pre>
+</div>
+</div>
+<p>The same format also works for dataframes in lists. For example, you could run the following to get the original trait value in row 3 of the fourth dataset in the list:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>list_of_dataframes[[<span class="dv">3</span>]]<span class="sc">$</span>OriginalTraitValue[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.25</code></pre>
+</div>
+</div>
+<p>The same format also works on raw functions, although it is recommended that retrieved datasets are immediately stored in an <code>R</code> object:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_dataset</span>(<span class="dv">5</span>)<span class="sc">$</span>SubmittedBy[<span class="dv">1</span>] <span class="co"># Name of person who submitted the dataset with ID 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Paul Huxley"</code></pre>
+</div>
+</div>
+</section>
+<section id="plotting-datasets-using-ggplot2" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-datasets-using-ggplot2">Plotting datasets using <code>ggplot2</code></h3>
+<p>Once the database is retrieved, data can be used to explore and plot. In this example the dataset 49 will be used. This dataset have data about fecundity (number of eggs per individual) at different temperatures for the species <strong>Sepedon fuscipennis</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>dataset49 <span class="ot">&lt;-</span> <span class="fu">get_dataset</span>(<span class="dv">49</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By using tools from <code>ggplot2</code> data can be transformed and used:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>dataset49 <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Interactor1Temp,OriginalTraitValue)) <span class="sc">+</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">col =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymax =</span> OriginalTraitValue<span class="sc">+</span>OriginalErrorPos, </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin =</span> OriginalTraitValue<span class="sc">-</span>OriginalErrorNeg), <span class="at">width =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Intro_to_API_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The same can be done when multiple datasets are retrieved. For this example we will use two datasets about fecundity (number of eggs per individual) at different temperatures.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>longevity_temp <span class="ot">&lt;-</span> <span class="fu">get_datasets</span>(<span class="fu">c</span>(<span class="dv">71</span>,<span class="dv">111</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Retrieving dataset: 71 
+Retrieving dataset: 111 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>longevity_temp <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind,<span class="fu">lapply</span>(longevity_temp, data.frame, <span class="at">stringsAsFactors=</span><span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can display both datasets on the same plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>longevity_temp <span class="sc">%&gt;%</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DatasetID =</span> <span class="fu">factor</span>(DatasetID)) <span class="sc">%&gt;%</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(Interactor1Temp, OriginalTraitValue, <span class="at">col =</span> DatasetID)) <span class="sc">+</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymax =</span> OriginalTraitValue<span class="sc">+</span>OriginalErrorPos, </span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin =</span> OriginalTraitValue<span class="sc">-</span>OriginalErrorNeg), <span class="at">width =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Intro_to_API_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

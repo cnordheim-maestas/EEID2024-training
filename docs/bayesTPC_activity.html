@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.552">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -461,10 +461,10 @@ Trait[i] ~ T(dnorm(mean = m[i], tau = 1/sigma.sq), 0, )
 
 Parameters:
             MAP   Mean Median        Priors
-T_max    26.353 26.152 26.079 dunif(25, 60)
-T_min    19.482 20.776 21.090  dunif(0, 24)
-q         0.072  0.295  0.204   dunif(0, 1)
-sigma.sq 38.915 39.065 39.148       dexp(1)</code></pre>
+T_max    26.068 26.639 26.496 dunif(25, 60)
+T_min    21.144 18.199 18.762  dunif(0, 24)
+q         0.220  0.097  0.055   dunif(0, 1)
+sigma.sq 38.893 39.173 39.137       dexp(1)</code></pre>
 </div>
 </div>
 <p>We can also see what is in the object:</p>
@@ -612,7 +612,7 @@ Priors:
 
 Max. A Post. Parameters: 
      T_max      T_min          q   sigma.sq   log_prob 
-   26.3533    19.4824     0.0721    38.9154 -2039.2996 
+   26.0682    21.1445     0.2204    38.8927 -2039.2979 
 
 MCMC Results:
 Iterations = 1:10000
@@ -623,19 +623,19 @@ Sample size per chain = 10000
 1. Empirical mean and standard deviation for each variable,
    plus standard error of the mean:
 
-            Mean     SD Naive SE Time-series SE
-T_max    26.1524 0.2636 0.002636        0.02564
-T_min    20.7761 1.0195 0.010195        0.36384
-q         0.2954 0.2313 0.002313        0.10052
-sigma.sq 39.0648 3.0974 0.030974        0.21892
+             Mean     SD Naive SE Time-series SE
+T_max    26.63862 0.9774 0.009774        0.07541
+T_min    18.19854 2.9945 0.029945        1.09320
+q         0.09654 0.1099 0.001099        0.06170
+sigma.sq 39.17343 3.1641 0.031641        0.20663
 
 2. Quantiles for each variable:
 
-             2.5%     25%     50%    75%   97.5%
-T_max    26.00595 26.0197 26.0786 26.196 26.6038
-T_min    18.34540 20.3727 21.0898 21.577 21.7813
-q         0.04796  0.1139  0.2043  0.446  0.8838
-sigma.sq 34.82566 37.7241 39.1485 40.724 43.6478</code></pre>
+             2.5%      25%      50%     75%   97.5%
+T_max    26.01758 26.19795 26.49642 26.8068 27.9556
+T_min     9.92475 17.13453 18.76156 20.4353 21.6660
+q         0.01294  0.03445  0.05463  0.1195  0.4815
+sigma.sq 34.84046 37.71210 39.13724 40.7290 44.1219</code></pre>
 </div>
 </div>
 <p>We may want to store some of the sample statistics for later use. The sample-based Maximum <em>a posteriori</em> (MAP) estimator is calculated and saved as part of our fitting process, and can be obtained directly from the fit object.</p>
@@ -644,7 +644,7 @@ sigma.sq 34.82566 37.7241 39.1485 40.724 43.6478</code></pre>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>adult_life_fit<span class="sc">$</span>MAP_parameters <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      T_max       T_min           q    sigma.sq    log_prob 
-   26.35330    19.48236     0.07213    38.91544 -2039.29956 </code></pre>
+   26.06816    21.14448     0.22038    38.89269 -2039.29786 </code></pre>
 </div>
 </div>
 <p>The other sample statistics for each parameter can be obtained by saving the summary of the <em>samples</em> in the fitted model object. Then the various statistics may be extracted directly:</p>
@@ -654,28 +654,28 @@ sigma.sq 34.82566 37.7241 39.1485 40.724 43.6478</code></pre>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean</span></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>estimates<span class="sc">$</span>statistics[,<span class="st">"Mean"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     T_max      T_min          q   sigma.sq 
-26.1523797 20.7760824  0.2953669 39.0648293 </code></pre>
+<pre><code>      T_max       T_min           q    sigma.sq 
+26.63861506 18.19854223  0.09653506 39.17342581 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Median and 95% CI bounds</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>estimates<span class="sc">$</span>quantiles[,<span class="fu">c</span>(<span class="st">"2.5%"</span>, <span class="st">"50%"</span>, <span class="st">"97.5%"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                2.5%        50%      97.5%
-T_max    26.00594550 26.0785582 26.6038477
-T_min    18.34539630 21.0897987 21.7813345
-q         0.04796055  0.2042684  0.8837863
-sigma.sq 34.82565698 39.1484559 43.6478472</code></pre>
+<pre><code>                2.5%         50%      97.5%
+T_max    26.01758235 26.49641744 27.9555552
+T_min     9.92475436 18.76155914 21.6660160
+q         0.01294397  0.05462537  0.4815458
+sigma.sq 34.84045905 39.13724385 44.1219335</code></pre>
 </div>
 </div>
 <p>If one instead would like the Highest Posterior Density bounds (instead of the quantile based summaries) the <code>HPDinterval</code> function from <code>coda</code> may be used.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">HPDinterval</span>(adult_life_fit<span class="sc">$</span>samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>               lower     upper
-T_max    26.00327163 26.541295
-T_min    18.62211018 21.816110
-q         0.04247238  0.762813
-sigma.sq 34.82383141 43.592328
+<pre><code>               lower      upper
+T_max    26.01057042 27.6155624
+T_min    10.62498846 21.7352107
+q         0.01090611  0.3491577
+sigma.sq 34.77631231 43.9865916
 attr(,"Probability")
 [1] 0.95</code></pre>
 </div>
@@ -816,7 +816,7 @@ Priors:
 
 Max. A Post. Parameters: 
     T_max     T_min         q  sigma.sq  log_prob 
-  56.1306   16.1473    0.0004    0.0003 1855.7780 
+  55.7379   16.2339    0.0004    0.0003 1855.7957 
 
 MCMC Results:
 Iterations = 1:7000
@@ -828,18 +828,18 @@ Sample size per chain = 7000
    plus standard error of the mean:
 
               Mean        SD  Naive SE Time-series SE
-T_max    5.619e+01 1.960e+00 2.342e-02      7.562e-02
-T_min    1.616e+01 3.453e-01 4.127e-03      1.272e-02
-q        3.590e-04 3.728e-05 4.455e-07      1.470e-06
-sigma.sq 2.865e-04 1.543e-05 1.844e-07      1.978e-07
+T_max    5.596e+01 2.022e+00 2.417e-02      8.360e-02
+T_min    1.619e+01 3.518e-01 4.205e-03      1.423e-02
+q        3.634e-04 3.956e-05 4.728e-07      1.681e-06
+sigma.sq 2.868e-04 1.548e-05 1.850e-07      1.934e-07
 
 2. Quantiles for each variable:
 
               2.5%       25%       50%       75%     97.5%
-T_max    5.253e+01 5.476e+01 5.612e+01 5.769e+01 5.972e+01
-T_min    1.551e+01 1.591e+01 1.616e+01 1.641e+01 1.681e+01
-q        2.990e-04 3.298e-04 3.569e-04 3.842e-04 4.374e-04
-sigma.sq 2.579e-04 2.757e-04 2.860e-04 2.967e-04 3.185e-04</code></pre>
+T_max    5.199e+01 5.448e+01 5.593e+01 5.748e+01 5.963e+01
+T_min    1.554e+01 1.594e+01 1.619e+01 1.644e+01 1.688e+01
+q        3.007e-04 3.329e-04 3.607e-04 3.896e-04 4.513e-04
+sigma.sq 2.583e-04 2.762e-04 2.863e-04 2.967e-04 3.186e-04</code></pre>
 </div>
 </div>
 <p>We again plot the chains of the three main TPC parameters and the standard deviation of the normal observation model:</p>
@@ -862,12 +862,12 @@ Figure&nbsp;10: Traceplots for the three parameters of the quadratic TPC and the
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>bayesTPC<span class="sc">::</span><span class="fu">get_WAIC</span>(dev_rate_fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        WAIC         lppd        pWAIC 
--3731.677426  1870.397519     4.558806 </code></pre>
+-3731.593297  1870.435741     4.639093 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>bayesTPC<span class="sc">::</span><span class="fu">get_WAIC</span>(dev_rate_fit_Quad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        WAIC         lppd        pWAIC 
--3717.368134  1862.632830     3.948763 </code></pre>
+-3717.366659  1862.625001     3.941671 </code></pre>
 </div>
 </div>
 <p>In this case the WAIC for the Briere fit is more negative and so is the preferred model.</p>

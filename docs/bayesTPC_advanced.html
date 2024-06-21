@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.552">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -660,13 +660,13 @@ Start = 1
 End = 7 
 Thinning interval = 1 
         T_max    T_min     alpha      beta     r_max    sigma.sq
-[1,] 44.00235 17.85471 0.8784877 0.3704695 0.7989890 0.001292913
-[2,] 44.00206 17.72974 0.8779760 0.3629857 0.8084367 0.001044803
-[3,] 44.00816 17.53666 0.8631058 0.3718653 0.7954786 0.001699794
-[4,] 44.07525 16.31403 0.8341328 0.3471373 0.7968837 0.001915781
-[5,] 44.07119 18.36344 0.8046585 0.3917791 0.8207441 0.002398045
-[6,] 44.06693 18.64919 0.8268135 0.4072552 0.7717190 0.001343461
-[7,] 44.01967 18.69668 0.8363670 0.4069947 0.7929890 0.001128260</code></pre>
+[1,] 44.09960 17.92348 0.8091278 0.3946776 0.7758159 0.001999821
+[2,] 44.15790 15.78530 0.8128794 0.3379379 0.7987930 0.001212886
+[3,] 44.24256 17.24065 0.7917526 0.3685553 0.7919081 0.001245016
+[4,] 44.55657 15.29895 0.7830580 0.3217711 0.8095054 0.002268630
+[5,] 44.44653 10.48284 0.8249032 0.2673589 0.8225482 0.001814810
+[6,] 44.39401 12.34527 0.8183367 0.2737728 0.8272200 0.002820812
+[7,] 44.68581 13.02722 0.8099960 0.2912405 0.7859741 0.002030376</code></pre>
 </div>
 </div>
 <p>Each row corresponds to the values of the parameters in one iteration of the chain. Once the MCMC chain has reached convergence, each iteration corresponds to drawing a sample from the posterior distribution.</p>
@@ -708,7 +708,7 @@ Thinning interval = 1
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(ERYFit<span class="sc">$</span>samples[, <span class="st">"r_max"</span>] <span class="sc">-</span> nodrugFit<span class="sc">$</span>samples[, <span class="st">"r_max"</span>], <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      2.5%        50%      97.5% 
--0.3206317 -0.1540494  0.1520965 </code></pre>
+-0.3238721 -0.1544659  0.1566810 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"GEN"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -717,7 +717,7 @@ Thinning interval = 1
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(GENFit<span class="sc">$</span>samples[, <span class="st">"r_max"</span>] <span class="sc">-</span> nodrugFit<span class="sc">$</span>samples[, <span class="st">"r_max"</span>], <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      2.5%        50%      97.5% 
--0.4952626 -0.4459120 -0.4003555 </code></pre>
+-0.4954066 -0.4456259 -0.4007033 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"ERY+GEN"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -726,7 +726,7 @@ Thinning interval = 1
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(bothFit<span class="sc">$</span>samples[, <span class="st">"r_max"</span>] <span class="sc">-</span> nodrugFit<span class="sc">$</span>samples[, <span class="st">"r_max"</span>], <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      2.5%        50%      97.5% 
--0.3556227 -0.2745906  0.1324121 </code></pre>
+-0.3569801 -0.2749052  0.1284072 </code></pre>
 </div>
 </div>
 <p>In the flexTPC model we have an explicit equation for the optimal temperature</p>
@@ -752,12 +752,12 @@ Thinning interval = 1
 <div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(T_opt_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 39.13421</code></pre>
+<pre><code>[1] 39.10568</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(T_opt_samples, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.5</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%      50%    97.5% 
-37.90336 39.10419 40.50628 </code></pre>
+37.80276 39.09937 40.42490 </code></pre>
 </div>
 </div>
 <p>We can follow a similar approach to obtain the posterior distribution of the value of the curve at any temperature (or a grid of temperatures). In this case, the transformation of the parameters we want is simply the equation for the flexTPC model itself. With this equation, we can get the posterior distribution of the TPC at specific temperatures. We can then directly calculate medians and credible intervals to plot the TPCs.</p>
@@ -918,14 +918,14 @@ Configuring Output:
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>bayesTPC<span class="sc">::</span><span class="fu">get_WAIC</span>(allcondsFit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       WAIC        lppd       pWAIC 
--120.107542   65.211951    5.158181 </code></pre>
+-120.152557   65.205751    5.129472 </code></pre>
 </div>
 </div>
 <p>This gives us three values: WAIC (the main quantity we’re interested in), and two terms that are used to calculate the WAIC. These are the lppd (which measures how well the model fits the data) and pWAIC (a way to measure model complexity that depends on the number of parameters and how constrained they are by the priors). We can access the WAIC value itself with the following code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>bayesTPC<span class="sc">::</span><span class="fu">get_WAIC</span>(allcondsFit)[[<span class="st">"WAIC"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -120.1075</code></pre>
+<pre><code>[1] -120.1526</code></pre>
 </div>
 </div>
 <p>We can now find the WAICs from the individual curves. WAIC is additive, so we can simply add the WAICs for the individual curves to get a value that we can compare to the one we calculated above for the null model.</p>
@@ -937,7 +937,7 @@ Configuring Output:
 <span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>nodrugWAIC <span class="sc">+</span> ERYWAIC <span class="sc">+</span> GENWAIC <span class="sc">+</span> bothWAIC</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -395.3301</code></pre>
+<pre><code>[1] -395.5814</code></pre>
 </div>
 </div>
 <p>The WAIC for the individual curves is much lower (more negative) than for the single curve describing all data. Based on this, modeling this data as individual TPCs is preferred compared to having a single curve for all conditions.</p>
