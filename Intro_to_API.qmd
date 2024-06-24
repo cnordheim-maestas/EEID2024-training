@@ -16,14 +16,14 @@ Lets start installing the package `bayesTPC`. It is important to have some packa
 
 ```{r, eval=FALSE}
 # Run any of the following if you don't have them installed yet
-install.packages("nimble") 
-install.packages("remotes")
+# install.packages("nimble") 
+# install.packages("remotes")
 ```
 
 To install the package `bayesTPC`, you can use the following line of code:
 
 ```{r, eval=FALSE}
-remotes::install_github("johnwilliamsmithjr/bayesTPC")
+# remotes::install_github("johnwilliamsmithjr/bayesTPC")
 ```
 
 ## Getting to know the VecTraits database

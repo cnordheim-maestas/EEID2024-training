@@ -49,7 +49,7 @@ These three trait sets allow us to explore a full range of models and functional
 
 ## Data from VecTraits
 
-The data we want to fit is available on the VecTraits database. We can use the helper function  included as part of `bayesTPC` that isdesigned to interact with this database, `get_datasets()`, along with the appropriate data set id numbers to retrieve and load them into `R`.
+The data we want to fit is available on the VecTraits database. We can use the helper function included as part of `bayesTPC` that is designed to interact with this database, `get_datasets()`, along with the appropriate data set id numbers to retrieve and load them into `R`.
 
 ```{r, results = F}
 #| cache: true
@@ -248,7 +248,7 @@ par(mfrow=c(2,2), bty="n", mar=c(4,4,3,1)+.1)
 for(i in 1:4) {
   acf(s1[,i], lag.max=50, main="",
       ylab = paste("ACF: ", names(s1)[i], sep=""))
-}
+} ## where is the nt parm it mentions?
 ```
 
 There is still autocorrelation, especially for two of the quadratic parameters. The chain for $\sigma$ is mixing best (the ACF falls off the most quickly). We could reduce the autocorrelation even further by thinning the chain **(i.e., change the `nt` parameter to 5 or 10)**, or changing the type of sampler.
@@ -263,7 +263,7 @@ A second important diagnostic step is to compare the marginal priors and posteri
 #| fig-cap: "Marginal prior/posterior for the three parameters of the Briere TPC and the observation parameter for the model fitted to the Adult Longevity data. Note that the burn-in is dropped for these plots using the `burn` argument. "
 
 par(mfrow=c(2,2), mar=c(4,3,3,1)+.1)
-ppo_plot(adult_life_fit, burn=myburn, legend_position = "topright")
+ppo_plot(adult_life_fit, burn=3000, legend_position = "topright")
 
 ```
 
@@ -279,14 +279,15 @@ After we have established appropriate burn-in values, we can use `plot()`, `post
 
 par(mfrow=c(1,2), mar=c(4,3,3,1)+.1)
 Ts<-seq(5, 37, length=100)
-plot(adult_life_fit, burn=myburn,
+plot(adult_life_fit, burn=3000,
      temp_interval = Ts, main = "", lwd=2,
      legend_position = "topleft")
 plot_prediction(posterior_predictive(adult_life_fit,
                                      temp_interval = Ts,
-                                     burn=myburn), lwd=2,
+                                     burn=3000), lwd=2,
                 legend_position = "topleft")
 ```
+
 Note that the two bottom fits show different output. On the left we show the HPD bounds and median of the fitted Briere function, only. On the right, in contrast, shows the bounds and mean/median of the posterior predictive distribution (so it includes the randomness that is part of the truncated normal observation model). Notice that the HPD predictive interval is a bit jagged here. These intervals are generated using sampling from the posterior predictive distribution. Increasing the total number of samples can give smoother bounds in general. 
 
 Now that we've confirmed that things are working well, it's often useful to also look at the joint distribution of all of your parameters together to understand how estimates are related to each other. Of course, if you have a high dimensional posterior, rendering a 2-D representation can be difficult. The standard is to examine the pair-wise posterior distribution. We can do this using the function `bayesTPC_ipairs()`:
@@ -295,7 +296,7 @@ Now that we've confirmed that things are working well, it's often useful to also
 #| label: fig-plotJoint1
 #| fig-cap: "Pairwise visualization of the joint posterior distribution of parameters for the three parameters of the Briere TPC and the observation parameter for the model fitted to the Adult Longevity data. Note that the burn-in is dropped for this plot using the `burn` argument. "
 
-bayesTPC_ipairs(adult_life_fit, burn=myburn)
+bayesTPC_ipairs(adult_life_fit, burn=3000)
 ```
 
 Notice that there is substantial correlation between $q$ and $T_{min}$ (a.k.a., $T_0$). This is typical for most TPCs, and is one of the reasons why prior choice can be very important!
@@ -305,6 +306,7 @@ Notice that there is substantial correlation between $q$ and $T_{min}$ (a.k.a., 
 If we are satisfied with the traceplots, fits, and prior/posterior plots, users may want to examine additional summary output (for example to make tables) or to save summaries. Numerical summaries are available through the `print()` function shown above, but we can see more details using `summary()`.
 
 ```{r}
+myburn <- 3000
 summary(adult_life_fit, burn=myburn)
 ```
 

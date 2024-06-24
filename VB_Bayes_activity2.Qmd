@@ -242,6 +242,38 @@ As with the analytic approach, it's always a good idea when you run your analyse
 
 Download VecTraits dataset 562 (Kutcherov et al. 2018. Effects of temperature and photoperiod on the immature development in *Cassida rubiginosa Mull.* and *C. stigmatica Sffr.* (Coleoptera: Chrysomelidae). Sci. Rep. 9: 10047). This dataset explores the effects of temperature and photoperiod on body size (weight in mg) for *Cassida stigmatica*, a type of small beetle. Subset the data so you focus on one temperature/photoperiod combination (you could also choose to subset by sex). Using the same model as above, potentially with a different prior distribution, and with the value of $\tau$ set to $1/s^2$ (where $s$ is the empirical standard deviation of your dataset), redo the analysis above.
 
+```{r}
+library(bayesTPC) # load library to get access to data
+library(tidyverse)
+
+dataset562 <- get_dataset(562) # Get dataset with ID 562
+
+# Subset the data so you focus on one temperature/photoperiod combination
+# does not play well with tidyverse, probs because it's not a tibble!
+# dat <- dataset562 %>%
+#   filter(Interactor1Temp == 15.871) %>%  # filter one temp: 15.871
+#   filter(SecondStressorValue == 12) # filter one photoperiod: 12 hours
+
+# Subset the data so you focus on one temperature/photoperiod combination
+## try subset function
+dat <- subset(dataset562, Interactor1Temp == 15.871 & SecondStressorValue == 12)
+
+# grab the mean
+mean <- mean(dat$OriginalTraitValue) # 11.3 mg
+
+# grab the SD
+sd <- sd(dat$OriginalTraitValue) # 2
+
+tau <- 1/(sd**2) # 0.25
+
+## quick vis
+hist(dat$OriginalTraitValue) # looks pretty normal, and we have our variance
+```
+
+
+
+
+
 <br> <br> <br>
 
 # Optional Advanced Exercise: Estimating the population variance
@@ -354,5 +386,7 @@ ipairs(as.matrix(samp2[,1:2]), ztransf = function(x){x[x<1] <- 1; log2(x)})
 ## Practice: Updating the model
 
 Redo the previous analysis placing a gamma prior on $\mu$ as well. Set the prior so that the mean and variance are the same as in the normal example from above (use moment matching). Do you get something similar?
+
+
 
 <br> <br> <br>

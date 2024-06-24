@@ -1,0 +1,266 @@
+---
+title: "Independent Analysis"
+author: "Caitlin Nordheim-Maestas"
+---
+# Overview
+
+Goal: fitting TPC curves to *mosquito* trait data (larval development), then once I fit what I think is best, I will try another model fit and compare them using wAIC
+
+My data: development rate 1/time for a mosquito to develop 
+(inverse to force the curve to be mountain shaped not valley shaped)
+
+Dataset 87 on Vectorbyte: <https://vectorbyte.crc.nd.edu/vectraits-dataset/87>
+
+Also states “assuming lifespan and development time, respectively, are exponentially distributed”
+
+# Load libararies
+
+```{r, results="hide", warning=FALSE, message=FALSE}
+# Load libraries
+library(nimble)
+library(HDInterval)
+library(MCMCvis)
+library(coda) # makes diagnostic plots
+library(matrixStats)
+library(truncnorm)
+library(bayesTPC)
+```
+
+# Step 1: get the data 
+
+```{r}
+dat <- get_dataset(87)
+```
+
+
+# Step 2: explore the data
+# using base R
+
+```{r}
+head(dat)
+colnames(dat)
+dat$Interactor1Temp
+range(dat$Interactor1Temp) # tested at ranges from 16-32 degrees
+range(dat$OriginalTraitValue) # ranges from 9 days to 25 days
+```
+
+# Step 3: put trait data into specific format
+list with name `Trait` for the modeled response 
+List with name `Temp` for the corresponding temperature settings in degrees
+
+```{r}
+dev_rate <- list(Trait = 1/dat$OriginalTraitValue,
+                 Temp = dat$Interactor1Temp)
+```
+
+# Step 4: plot the data
+
+```{r}
+plot(dev_rate$Temp, dev_rate$Trait, 
+     xlab="Temperature (C)", ylab="Trait: 1/time to development in days", main="Development Rate of Mosquitoes")
+```
+
+# Step 5: select your functional form
+Two of the more common (and easy to fit) functions are quadratic and Briere. 
+
+- Traits that respond unimodally but symmetrically to temperature (often the case for compound traits) can be fit with a quadratic function
+- Traits that respond unimodally but asymetrically can be fitted with a Briere function
+
+Let's try Briere for funsies! But let's look at the default priors.
+
+```{r}
+get_default_priors("briere") # let's try 45-ish for max temp, a reasonable but maybe pushing it value according to Mauricio
+```
+
+Ok cool, we have a reasonable prior for q (needs to be concave down), Tmax and Tmin can't overlap, Tmax max is 60 (may be a little high for my obs, we only see to 30), and tmin is 0, which makes sense (frozen)
+
+# Step 6: Fit the model 
+
+`b_TPC` function requires two user-specified inputs:
+- `data`;  named "Trait" corresponding to the trait being modeled by the TPC and "Temp" corresponding to the temperature in Celsius
+- `model`, which is a string specifying the model name or a `btpc_model` object. If a string is provided, the default model specification is used. 
+
+Example: Briere
+
+Chosen because: adult lifespan are numeric data where a concave down unimodal response is likely appropriate
+
+Prior for Variance:
+  sigma.sq ~ dexp(1)
+  
+must be positive, smaller rather than larger, but if too small then it wont converge, if want to allow for more var you make the 1 smaller!
+
+dexp(1): which means that the variance follows an exponential distribution with a rate parameter of 1,  you are specifying that the variability in performance is expected to be reasonably small but not zero, and you allow for the possibility of larger variances without making them highly probable
+
+# code for fitting
+a single line of code with the first argument being the name of the formatted data object and the second being the name of the TPC that we want to use for fitting. By default we take 10000 samples, no burn-in, using a random walk sampler
+
+```{r}
+#dev_rate_fit <- b_TPC(dev_rate, "briere") # also try changing the slice sampler and try increasing the iterations, change initial value min and max
+
+dev_rate_fit2 <- b_TPC(dev_rate, "briere",
+                       priors = list(T_min = "dunif(0,20)", # how do I make an informed decision for the high end
+                                     T_max = "dunif(30,45)"), # how do I make an informed decision on the low end
+                       niter = 100000,
+                       burn=myburn,
+                       samplerType = "AF_slice")
+```
+
+
+# Step 7: Looks at the model object & summaries
+
+using `print`. This command provides details about the model fit, the priors, and some simple summaries of the fitted model.
+
+```{r}
+print(dev_rate_fit2)
+```
+
+Q: what is map??
+
+MAP estimator is the value of θ that maximizes the posterior distribution
+
+In other words, find the sample that is the "most likely" among all the samples you have, and that is your MAP estimate.
+
+# Step 8: MCMC diagnostic plots
+
+check the MCMC traceplot before using or interpreting a fitted model to ensure the chains have converged. An MCMC traceplot shows each sample for a parameter in the order that the samples were taken. If the model has converged, the traceplot will eventually start varying around a single point, resembling a "fuzzy caterpillar".
+
+Look for the burn-in
+
+```{r}
+par(mfrow=c(2,2), mar=c(4,3,3,1)+.1) # set up the number of plots and margins
+traceplot(dev_rate_fit2)
+```
+
+How to determine the proper "burn-in"? let's play, and try 5,000
+
+```{r}
+par(mfrow=c(2,2), mar=c(4,3,3,1)+.1)
+myburn<-5000
+traceplot(dev_rate_fit2, burn=myburn)
+
+
+par(mfrow=c(3,2), mar=c(4,3,3,1)+.1)
+myburn<-5000
+traceplot(dev_rate_fit2, burn=myburn)
+plot(dev_rate$Temp, dev_rate$Trait, 
+     xlab="Temperature", ylab="Trait", main="Development Rate")
+plot(dev_rate_fit2, burn=myburn)
+```
+
+# Step 9: Look at autocorrelation with the ACF
+
+```{r}
+s1<-as.data.frame(dev_rate_fit2$samples[myburn:10000,]) # why 10k here??
+par(mfrow=c(2,2), bty="n", mar=c(4,4,3,1)+.1)
+for(i in 1:4) {
+  acf(s1[,i], lag.max=50, nt= 5, main="",
+      ylab = paste("ACF: ", names(s1)[i], sep=""))
+}
+```
+
+
+In our ex, there is still autocorrelation, We could reduce the autocorrelation even further by thinning the chain **(i.e., change the `nt` parameter to 5 or 10)**, or changing the type of sampler
+
+Thinning the chain: In MCMC, high autocorrelation means that consecutive samples are highly similar to each other, indicating that the chain is not exploring the parameter space efficiently…selecting every k-th sample from the original chain, where k is a thinning interval. By doing this, you essentially down-sample the chain to reduce the correlation between consecutive samples.
+
+Best: falls off quickly
+
+Woohoo looking good
+
+# Step 10: compare the marginal priors and posteriors of our model parameters
+
+This enables us to confirm that (unless we've purposefully specified an informative prior) that our posterior distributions have been informed by the data
+
+built in function, `ppo_plot()`, that creates posterior/prior overlap plots for all model parameters
+
+If priors and posteriors are very similar one should shift the priors, and re-run. 
+
+```{r}
+par(mfrow=c(2,2), mar=c(4,3,3,1)+.1)
+ppo_plot(dev_rate_fit2, burn=5000, legend_position = "topright")
+```
+
+
+Step 11: Additional plotting
+
+examine the fit of the model in two ways
+
+defaults for the `plot()` function plots the median and 95% Highest Posterior Density (HPD) interval of the *fitted function* (i.e., plugging the samples into the TPC function, and calculating the median and HPD interval at all evaluated temperatures). 
+
+On the left we show the HPD bounds and median of the fitted Briere function, only
+
+```{r}
+par(mfrow=c(1,2), mar=c(4,3,3,1)+.1)
+Ts<-seq(5, 37, length=100)
+plot(dev_rate_fit2, burn=5000,
+     temp_interval = Ts, main = "", lwd=2,
+     legend_position = "topleft")
+
+plot_prediction(posterior_predictive(dev_rate_fit2,
+                                     temp_interval = Ts,
+                                     burn=5000), lwd=2,
+                legend_position = "topleft")
+```
+
+
+`posterior_predictive()` function uses simulation to draw points from the posterior predictive distribution, and so it includes both the samples describing the TPC function and the observational model. It then uses these samples to calculate the mean/median and the HPD interval of those simulated points.
+
+On the right, in contrast, shows the bounds and mean/median of the posterior predictive distribution (so it includes the randomness that is part of the truncated normal observation model).
+
+
+joint distribution of all of your parameters together
+
+together to understand how estimates are related to each other. Of course, if you have a high dimensional posterior, rendering a 2-D representation can be difficult. The standard is to examine the pair-wise posterior distribution. We can do this using the function `bayesTPC_ipairs()`
+
+```{r}
+bayesTPC_ipairs(dev_rate_fit, burn=5000)
+```
+
+Notice that there is substantial correlation between $q$ and $T_{min}$ (a.k.a., $T_0$). This is typical for most TPCs, and is one of the reasons why prior choice can be very important!
+
+Step 12: Summaries
+
+```{r}
+summary(dev_rate_fit2, burn=myburn)
+```
+
+MAP estimator is the value of θ that maximizes the posterior distribution
+
+In other words, find the sample that is the "most likely" among all the samples you have, and that is your MAP estimate.
+
+Save the map:
+
+```{r}
+dev_rate_fit2$MAP_parameters |> round(5)
+```
+
+Save and pull the mean, median, and quantiles
+
+```{r}
+estimates <- summary(dev_rate_fit2$samples)
+
+# Mean
+estimates$statistics[,"Mean"]
+
+# Median and 95% CI bounds
+estimates$quantiles[,c("2.5%", "50%", "97.5%")]
+```
+
+Highest Posterior Density bounds (instead of the quantile based summaries) the `HPDinterval` 
+
+```{r}
+HPDinterval(dev_rate_fit2$samples)
+```
+
+# Potential next steps
+
+- Model comparison
+- Comparison of the curves between species
+- Feed this curve into SIR models, etc
+
+
+
+
+
+
+
